@@ -8,12 +8,10 @@
                 <span class="list-group-item pe-4"
                     >이벤트 종료일: {{ eventEnd.toLocaleString() }}
                 </span>
-                <span class="list-group-item pe-4"
-                    >이벤트 기간: {{ eventPeriod }} 주
-                </span>
+                <span class="list-group-item pe-4">이벤트 기간: 주 </span>
             </ul>
         </div>
-        <div>
+        <div class="container">
             <Main />
         </div>
     </div>
@@ -21,8 +19,9 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { DateTime, Interval } from 'luxon';
+import { DateTime } from 'luxon';
 import Main from '@/components/Main.vue';
+import { setEventPeriod } from './store/mutationTypes';
 
 export default defineComponent({
     name: 'App',
@@ -33,20 +32,17 @@ export default defineComponent({
             eventEnd: DateTime.fromISO('2021-06-16'),
         };
     },
-    computed: {
-        eventPeriod(): number {
-            return (
-                Interval.fromDateTimes(this.eventStart, this.eventEnd).count(
-                    'day'
-                ) / 7
-            );
-        },
+    created() {
+        this.$store.commit(setEventPeriod, {
+            eventStart: this.eventStart,
+            eventEnd: this.eventEnd,
+        });
     },
 });
 </script>
 
 <style lang="scss">
-@import 'node_modules/bootstrap/scss/bootstrap.scss';
+@import './scss/style.scss';
 
 body {
     width: 100%;
