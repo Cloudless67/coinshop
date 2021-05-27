@@ -1,4 +1,4 @@
-export default abstract class Table {
+export default class Table {
     table: (string | number)[][];
     headers?: string[];
     footers?: string[];
@@ -8,10 +8,15 @@ export default abstract class Table {
     }
 
     get columns() {
-        return this.table[0].map((_, col) => this.table.map((row) => row[col]));
+        return this.table[0].map((_, col) => this.table.map(row => row[col]));
     }
 
-    abstract addRow(row: number): void;
-
-    abstract removeRow(row: number): void;
+    addRow(row: number, newRow: (string | number)[]): void {
+        this.table.splice(row + 1, 0, newRow);
+    }
+    removeRow(row: number): void {
+        console.log(row);
+        this.table.splice(row, 1);
+        console.log(this.table);
+    }
 }

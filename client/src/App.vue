@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="back">
         <div class="container-fluid bg-primary py-2">
             <ul class="list-group list-group-horizontal justify-content-center">
                 <span class="list-group-item pe-4"
@@ -43,8 +43,11 @@ export default defineComponent({
 
 <style lang="scss">
 @import './scss/style.scss';
-
 body {
     width: 100%;
+}
+
+.back {
+    height: 100vh;
 }
 </style>

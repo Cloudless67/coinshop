@@ -13,4 +13,8 @@ export default {
         character = Math.max(1, character);
         return character * 24;
     },
+
+    itemsNameList(state: State) {
+        return state.itemsList.map((item) => item.name);
+    },
 };
