@@ -10,53 +10,53 @@
             </thead>
             <tbody ref="tbody">
                 <tr
-                    v-for="i in rows.length"
+                    v-for="(row, i) in rows"
                     :key="i"
-                    @keydown.ctrl.enter="addRow(i - 1)"
-                    @keydown.ctrl.delete.prevent="removeRow(i - 1)"
+                    @keydown.ctrl.enter="addRow(i)"
+                    @keydown.ctrl.delete.prevent="removeRow(i)"
                 >
                     <td class="coin-name">
-                        {{ coinName(rows[i - 1].item.coin) }}
+                        {{ coinName(row.item.coin) }}
                     </td>
                     <td class="item-name">
                         <Autocomplete
-                            :value="rows[i - 1].item.name"
+                            :value="row.item.name"
                             :itemsList="$store.getters.itemsNameList"
                             :width="'100%'"
-                            @update="updateItem($event, i - 1)"
+                            @update="updateItem($event, i)"
                         />
                     </td>
                     <td class="price">
-                        {{ commaSeperatedNumber(rows[i - 1].item.price) }}
+                        {{ commaSeperatedNumber(row.item.price) }}
                     </td>
                     <td class="exchangable">
-                        {{ rows[i - 1].item.exchange }}
+                        {{ row.item.exchange }}
                     </td>
                     <td class="per-character">
-                        {{ rows[i - 1].item.perCharacter ? 'O' : 'X' }}
+                        {{ row.item.perCharacter ? 'O' : 'X' }}
                     </td>
                     <td class="qty">
-                        {{ rows[i - 1].item.qty }}
+                        {{ row.item.qty }}
                     </td>
                     <td class="character">
                         <Autocomplete
-                            :value="rows[i - 1].character"
+                            :value="row.character"
                             :itemsList="$store.state.characterData.columns[0]"
                             :width="'12ch'"
-                            @update="updateCharacter($event, i - 1)"
+                            @update="updateCharacter($event, i)"
                         />
                     </td>
                     <td class="buying-qty">
                         <input
-                            :value="rows[i - 1].buyingQty"
-                            @input="updateBuyingQty($event.target.value, i - 1)"
+                            :value="row.buyingQty"
+                            @input="updateBuyingQty($event.target.value, i)"
                             type="number"
                             min="0"
                             max="999"
                         />
                     </td>
                     <td class="sum">
-                        {{ commaSeperatedNumber(rows[i - 1].sum) }}
+                        {{ commaSeperatedNumber(row.sum) }}
                     </td>
                 </tr>
                 <tr class="text-center" v-for="(coinName, i) in $store.state.coinNames" :key="i">

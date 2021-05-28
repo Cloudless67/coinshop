@@ -8,25 +8,25 @@
             </tr>
         </thead>
         <tbody ref="tbody">
-            <tr v-for="i in rows.length" :key="i">
+            <tr v-for="(row, i) in rows" :key="i">
                 <td>
                     <input
                         class="nickname"
                         type="text"
-                        :value="rows[i - 1][0]"
-                        @keydown.ctrl.enter="addRow(i - 1)"
-                        @keydown.ctrl.delete.prevent="removeRow(i - 1)"
-                        @input="updateNickname($event, i - 1)"
+                        :value="row.nickname"
+                        @keydown.ctrl.enter="addRow(i)"
+                        @keydown.ctrl.delete.prevent="removeRow(i)"
+                        @input="updateNickname($event, i)"
                     />
                 </td>
                 <td>
-                    {{ rows[i - 1][1] }}
+                    {{ row.expectedTotal }}
                 </td>
                 <td>
-                    {{ rows[i - 1][2] }}
+                    {{ row.used }}
                 </td>
                 <td>
-                    {{ rows[i - 1][3] }}
+                    {{ row.surplus }}
                 </td>
             </tr>
         </tbody>
@@ -61,15 +61,13 @@ export default defineComponent({
     computed: {
         rows() {
             const days = this.$store.getters.eventDuration;
-            const weeks = days / 7;
-            const gardening = this.$store.getters.gardeningCoin;
             return this.$store.state.characterData.table.map((nickname, i) => {
-                let expectedTotal = weeks * 300 * 8;
-                if (i === 0) expectedTotal += gardening * days;
+                let expectedTotal = (days / 7) * 300 * 8;
+                if (i === 0) expectedTotal += this.$store.getters.gardeningCoin * days;
 
                 const used = 0;
                 const surplus = expectedTotal - used;
-                return [nickname[0], expectedTotal, used, surplus];
+                return { nickname, expectedTotal, used, surplus };
             });
         },
     },
