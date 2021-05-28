@@ -1,12 +1,6 @@
 <template>
     <table class="table table-sm table-striped">
-        <thead>
-            <tr>
-                <th v-for="header in headers" :key="header">
-                    {{ header }}
-                </th>
-            </tr>
-        </thead>
+        <TableHeader :headers="['캐릭터', '모을 코인', '사용할 코인', '잉여']" />
         <tbody ref="tbody">
             <tr v-for="(row, i) in rows" :key="i">
                 <td>
@@ -35,6 +29,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import TableHeader from '@/components/Table/TableHeader.vue';
 import {
     addCharacterRow,
     removeCharacterRow,
@@ -44,6 +39,7 @@ import useTableRowController from '@/composables/useTableRowController';
 
 export default defineComponent({
     name: 'Character Table',
+    components: { TableHeader },
     setup() {
         const { tbody, addRow, removeRow } = useTableRowController();
 
@@ -53,21 +49,14 @@ export default defineComponent({
             removeRow: (row: number) => removeRow(removeCharacterRow, row, 0),
         };
     },
-    data() {
-        return {
-            headers: ['캐릭터', '모을 코인', '사용할 코인', '잉여'],
-        };
-    },
     computed: {
         rows() {
             const days = this.$store.getters.eventDuration;
             return this.$store.state.characterData.table.map((nickname, i) => {
                 let expectedTotal = (days / 7) * 300 * 8;
                 if (i === 0) expectedTotal += this.$store.getters.gardeningCoin * days;
-
-                const used = 0;
-                const surplus = expectedTotal - used;
-                return { nickname, expectedTotal, used, surplus };
+                const surplus = expectedTotal;
+                return { nickname, expectedTotal, used: 0, surplus };
             });
         },
     },

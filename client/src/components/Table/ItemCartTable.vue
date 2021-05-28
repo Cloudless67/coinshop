@@ -1,13 +1,19 @@
 <template>
     <div class="wrapper">
         <table class="table table-sm table-striped">
-            <thead>
-                <tr>
-                    <th v-for="header in headers" :key="header">
-                        {{ header }}
-                    </th>
-                </tr>
-            </thead>
+            <TableHeader
+                :headers="[
+                    '코인',
+                    '아이템',
+                    '가격',
+                    '창고\n이동',
+                    '캐릭별\n구매',
+                    '수량',
+                    '구매 캐릭터',
+                    '구매\n수량',
+                    '계',
+                ]"
+            />
             <tbody ref="tbody">
                 <tr
                     v-for="(row, i) in rows"
@@ -72,6 +78,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import TableHeader from '@/components/Table/TableHeader.vue';
 import Autocomplete from '@/components/Autocomplete.vue';
 import {
     addCartItem,
@@ -85,22 +92,7 @@ import Item from '@/Item';
 
 export default defineComponent({
     name: 'Items Cart Table',
-    components: { Autocomplete },
-    data() {
-        return {
-            headers: [
-                '코인',
-                '아이템',
-                '가격',
-                '창고\n이동',
-                '캐릭별\n구매',
-                '수량',
-                '구매 캐릭터',
-                '구매\n수량',
-                '계',
-            ],
-        };
-    },
+    components: { TableHeader, Autocomplete },
     setup() {
         const { tbody, addRow, removeRow } = useTableRowController();
 

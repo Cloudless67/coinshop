@@ -6,10 +6,11 @@
             :style="{ width }"
             @keydown.down="down"
             @keydown.up="up"
-            @keydown.enter="enter"
-            @input="updateInput"
-            @focus="updateInput"
+            @keydown.enter.exact="enter"
+            @input="updateInput($event.target.value)"
+            @focus="updateInput($event.target.value)"
             @blur="active = false"
+            @keydown.esc="active = false"
         />
         <ul v-show="active" class="list-group shadow" ref="list">
             <li
@@ -31,7 +32,7 @@
 import { defineComponent, PropType } from 'vue';
 
 export default defineComponent({
-    name: 'Autocomplete',
+    name: 'Autocomplete Input',
     emits: ['update'],
     props: {
         value: {
@@ -45,17 +46,24 @@ export default defineComponent({
         width: String,
     },
     data() {
-        return {
-            active: false,
-            focus: -1,
-            candidates: [] as string[],
-        };
+        return { active: false, focus: -1 };
+    },
+    computed: {
+        candidates(): string[] {
+            return this.itemsList.filter(x => x.includes(this.value));
+        },
+    },
+    watch: {
+        focus() {
+            if (this.focus >= 0) {
+                const list = this.$refs.list as HTMLUListElement;
+                list.children[this.focus].scrollIntoView();
+            }
+        },
     },
     methods: {
-        updateInput(e: Event) {
+        updateInput(value: string) {
             this.active = true;
-            const value = (e.target as HTMLInputElement).value;
-            this.candidates = this.itemsList.filter(x => x.includes(value));
             this.$emit('update', value);
         },
         select(cand: string) {
@@ -63,25 +71,15 @@ export default defineComponent({
             this.$emit('update', cand);
         },
         down() {
-            if (this.active) {
-                this.focus = Math.min(this.focus + 1, this.candidates.length - 1);
-                const list = this.$refs.list as HTMLUListElement;
-                list.children[this.focus].scrollIntoView(false);
-            }
+            this.active = true;
+            this.focus = Math.min(this.focus + 1, this.candidates.length - 1);
         },
         up() {
-            if (this.active) {
-                this.focus = Math.max(this.focus - 1, -1);
-                if (this.focus >= 0) {
-                    const list = this.$refs.list as HTMLUListElement;
-                    list.children[this.focus].scrollIntoView();
-                }
-            }
+            this.active = true;
+            this.focus = Math.max(this.focus - 1, -1);
         },
-        enter(e: KeyboardEvent) {
-            if (this.active && this.focus >= 0 && !e.ctrlKey) {
-                this.select(this.candidates[this.focus]);
-            }
+        enter() {
+            if (this.active && this.focus >= 0) this.select(this.candidates[this.focus]);
         },
     },
 });

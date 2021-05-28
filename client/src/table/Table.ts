@@ -14,9 +14,8 @@ export default class Table {
     addRow(row: number, newRow: (string | number)[]): void {
         this.table.splice(row + 1, 0, newRow);
     }
+
     removeRow(row: number): void {
-        console.log(row);
         this.table.splice(row, 1);
-        console.log(this.table);
     }
 }
