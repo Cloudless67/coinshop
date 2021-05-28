@@ -8,12 +8,12 @@
                     </th>
                 </tr>
             </thead>
-            <tbody ref="rows">
+            <tbody ref="tbody">
                 <tr
                     v-for="i in rows.length"
                     :key="i"
-                    @keydown.ctrl.enter="addRow($event, i - 1)"
-                    @keydown.ctrl.delete.prevent="removeRow($event, i - 1)"
+                    @keydown.ctrl.enter="addRow(i - 1)"
+                    @keydown.ctrl.delete.prevent="removeRow(i - 1)"
                 >
                     <td class="coin-name">
                         {{ coinName(rows[i - 1].item.coin) }}
@@ -56,7 +56,7 @@
                         />
                     </td>
                     <td class="sum">
-                        {{ commaSeperatedNumber(rows[i - 1].item.price * rows[i - 1].buyingQty) }}
+                        {{ commaSeperatedNumber(rows[i - 1].sum) }}
                     </td>
                 </tr>
                 <tr class="text-center" v-for="(coinName, i) in $store.state.coinNames" :key="i">
@@ -80,6 +80,7 @@ import {
     updateCartCharacter,
     updateCartItem,
 } from '@/store/mutationTypes';
+import useTableRowController from '@/composables/useTableRowController';
 import Item from '@/Item';
 
 export default defineComponent({
@@ -100,14 +101,24 @@ export default defineComponent({
             ],
         };
     },
+    setup() {
+        const { tbody, addRow, removeRow } = useTableRowController();
+
+        return {
+            tbody,
+            addRow: (row: number) => addRow(addCartItem, row, 1),
+            removeRow: (row: number) => removeRow(removeCartItem, row, 1),
+        };
+    },
     computed: {
         rows() {
             return this.$store.state.itemCartData.table.map(elem => {
                 const item: Item = this.$store.state.itemsList.find(item => item.name === elem[0]);
                 return {
-                    item: item || Item.createEmptyItem(),
+                    item: item || Item.createEmptyItem(elem[0] as string),
                     character: elem[1] as string,
                     buyingQty: elem[2] as number,
+                    sum: item ? (elem[2] as number) * item.price : 0,
                 };
             });
         },
@@ -139,22 +150,6 @@ export default defineComponent({
                 return item.qty - sum;
             }
         },
-        addRow(e: Event, row: number) {
-            this.$store.commit(addCartItem, row);
-            this.$nextTick(() => this.setFocus(row + 1));
-        },
-        removeRow(e: Event, row: number) {
-            if (row !== 0) {
-                this.$store.commit(removeCartItem, row);
-                this.setFocus(row - 1);
-            }
-        },
-        setFocus(row: number) {
-            const rows = (this.$refs.rows as Element).children;
-            const newRow = rows[row].children[1].firstElementChild
-                ?.firstElementChild as HTMLElement;
-            newRow.focus();
-        },
         coinName(coinID: number) {
             if (coinID >= 0) return this.$store.state.coinNames[coinID];
             else return '';
@@ -163,9 +158,7 @@ export default defineComponent({
             return num.toString().replaceAll(/\B(?=(\d{3})+$)/g, ',');
         },
         totalSum(coin: number) {
-            return this.rows
-                .filter(r => r.item.coin === coin)
-                .reduce((a, r) => a + r.item.price * r.buyingQty, 0);
+            return this.rows.filter(r => r.item.coin === coin).reduce((a, r) => a + r.sum, 0);
         },
     },
 });

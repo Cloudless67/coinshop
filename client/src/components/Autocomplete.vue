@@ -55,7 +55,7 @@ export default defineComponent({
         updateInput(e: Event) {
             this.active = true;
             const value = (e.target as HTMLInputElement).value;
-            this.candidates = this.itemsList.filter(x => x.startsWith(value));
+            this.candidates = this.itemsList.filter(x => x.includes(value));
             this.$emit('update', value);
         },
         select(cand: string) {

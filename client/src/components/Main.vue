@@ -1,10 +1,10 @@
 <template>
     <div class="row my-2">
-        <div class="col-lg-4" style="margin-top: 28px">
+        <div class="col-xl-4" style="margin-top: 28px">
             <InputTable />
             <CharacterTable />
         </div>
-        <div class="col-lg-8">
+        <div class="col-xl-8">
             <ItemCartTable />
         </div>
     </div>

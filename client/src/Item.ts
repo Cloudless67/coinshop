@@ -22,7 +22,7 @@ export default class Item {
         this.exchange = exchange;
     }
 
-    public static createEmptyItem() {
-        return new Item('', -1, 0, 0, true, '가능');
+    public static createEmptyItem(name?: string) {
+        return new Item(name || '', -1, 0, 0, true, '가능');
     }
 }

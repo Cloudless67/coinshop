@@ -7,7 +7,7 @@
                 </th>
             </tr>
         </thead>
-        <tbody ref="rows">
+        <tbody ref="tbody">
             <tr v-for="i in rows.length" :key="i">
                 <td>
                     <input
@@ -40,9 +40,19 @@ import {
     removeCharacterRow,
     updateCharacterNickname,
 } from '@/store/mutationTypes';
+import useTableRowController from '@/composables/useTableRowController';
 
 export default defineComponent({
     name: 'Character Table',
+    setup() {
+        const { tbody, addRow, removeRow } = useTableRowController();
+
+        return {
+            tbody,
+            addRow: (row: number) => addRow(addCharacterRow, row, 0),
+            removeRow: (row: number) => removeRow(removeCharacterRow, row, 0),
+        };
+    },
     data() {
         return {
             headers: ['캐릭터', '모을 코인', '사용할 코인', '잉여'],
@@ -70,22 +80,6 @@ export default defineComponent({
                 row,
                 nickname: target.value,
             });
-        },
-        addRow(row: number) {
-            this.$store.commit(addCharacterRow, row);
-            this.$nextTick(() => this.setFocus(row + 1));
-        },
-        removeRow(row: number) {
-            if (row !== 0) {
-                this.$store.commit(removeCharacterRow, row);
-                this.setFocus(row - 1);
-            }
-        },
-        setFocus(row: number) {
-            const rows = (this.$refs.rows as Element).children;
-            const newRow = rows[row].firstElementChild
-                ?.firstElementChild as HTMLElement;
-            newRow.focus();
         },
     },
 });
