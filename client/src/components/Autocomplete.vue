@@ -4,9 +4,9 @@
             type="text"
             :value="value"
             :style="{ width }"
-            @keydown.down="down"
-            @keydown.up="up"
-            @keydown.enter.exact="enter"
+            @keydown.down="handleDown"
+            @keydown.up="handleUp"
+            @keydown.enter.exact="handleEnter"
             @input="updateInput($event.target.value)"
             @focus="updateInput($event.target.value)"
             @blur="active = false"
@@ -53,14 +53,6 @@ export default defineComponent({
             return this.itemsList.filter(x => x.includes(this.value));
         },
     },
-    watch: {
-        focus() {
-            if (this.focus >= 0) {
-                const list = this.$refs.list as HTMLUListElement;
-                list.children[this.focus].scrollIntoView();
-            }
-        },
-    },
     methods: {
         updateInput(value: string) {
             this.active = true;
@@ -70,16 +62,24 @@ export default defineComponent({
             this.active = false;
             this.$emit('update', cand);
         },
-        down() {
+        handleDown() {
             this.active = true;
             this.focus = Math.min(this.focus + 1, this.candidates.length - 1);
+            this.scrollView(false);
         },
-        up() {
-            this.active = true;
+        handleUp() {
             this.focus = Math.max(this.focus - 1, -1);
+            this.active = this.focus !== -1;
+            this.scrollView(true);
         },
-        enter() {
+        handleEnter() {
             if (this.active && this.focus >= 0) this.select(this.candidates[this.focus]);
+        },
+        scrollView(up: boolean) {
+            if (this.focus >= 0) {
+                const list = this.$refs.list as HTMLUListElement;
+                list.children[this.focus].scrollIntoView(up);
+            }
         },
     },
 });

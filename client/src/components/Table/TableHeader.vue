@@ -16,3 +16,10 @@ export default defineComponent({
     props: ['headers'],
 });
 </script>
+
+<style scoped>
+th {
+    text-align: center;
+    white-space: pre-wrap;
+}
+</style>

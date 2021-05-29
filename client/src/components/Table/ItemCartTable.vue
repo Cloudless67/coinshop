@@ -104,13 +104,13 @@ export default defineComponent({
     },
     computed: {
         rows() {
-            return this.$store.state.itemCartData.table.map(elem => {
-                const item: Item = this.$store.state.itemsList.find(item => item.name === elem[0]);
+            return this.$store.state.itemCartData.table.map(row => {
+                const item = this.$store.getters.getItemByName(row[0]);
                 return {
-                    item: item || Item.createEmptyItem(elem[0] as string),
-                    character: elem[1] as string,
-                    buyingQty: elem[2] as number,
-                    sum: item ? (elem[2] as number) * item.price : 0,
+                    item: item || Item.createEmptyItem(row[0] as string),
+                    character: row[1] as string,
+                    buyingQty: row[2] as number,
+                    sum: item ? (row[2] as number) * item.price : 0,
                 };
             });
         },
@@ -158,13 +158,9 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .wrapper {
-    overflow-x: auto;
-    overflow-y: visible;
-}
-
-th {
-    text-align: center;
-    white-space: pre-wrap;
+    position: relative;
+    overflow: auto;
+    height: 80vh;
 }
 
 .coin-name {

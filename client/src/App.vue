@@ -1,16 +1,6 @@
 <template>
+    <div class="front"></div>
     <div class="back">
-        <div class="container-fluid bg-primary py-2">
-            <ul class="list-group list-group-horizontal justify-content-center">
-                <span class="list-group-item pe-4"
-                    >이벤트 시작일: {{ eventStart.toLocaleString() }}
-                </span>
-                <span class="list-group-item pe-4"
-                    >이벤트 종료일: {{ eventEnd.toLocaleString() }}
-                </span>
-                <span class="list-group-item pe-4">이벤트 기간: 주 </span>
-            </ul>
-        </div>
         <div class="container">
             <Main />
         </div>
@@ -44,10 +34,30 @@ export default defineComponent({
 <style lang="scss">
 @import './scss/style.scss';
 body {
+    position: relative;
     width: 100%;
+    background-image: url('/back.jpg');
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: -10;
 }
 
-.back {
-    height: 100vh;
+.container {
+    background: rgb(255, 255, 255, 0.95);
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+    box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.3);
+}
+
+.front {
+    position: fixed;
+    background-image: url('/front.png');
+    width: 100%;
+    height: 50vh;
+    bottom: 0;
+    z-index: -10;
 }
 </style>

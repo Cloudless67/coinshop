@@ -1,11 +1,10 @@
+import Item from '@/Item';
 import { Interval } from 'luxon';
 import { State } from 'vue';
 
 export default {
     eventDuration(state: State) {
-        return Interval.fromDateTimes(state.eventStart, state.eventEnd).count(
-            'day'
-        );
+        return Interval.fromDateTimes(state.eventStart, state.eventEnd).count('day');
     },
 
     gardeningCoin(state: State) {
@@ -15,6 +14,12 @@ export default {
     },
 
     itemsNameList(state: State) {
-        return state.itemsList.map((item) => item.name);
+        return state.itemsList.map(item => item.name);
+    },
+
+    getItemByName(state: State) {
+        return (name: string) => {
+            return state.itemsList.find(item => item.name === name);
+        };
     },
 };

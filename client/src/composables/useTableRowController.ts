@@ -6,7 +6,6 @@ export default function useTableRowController() {
     const tbody = ref<HTMLElement>();
 
     const setFocus = (row: number, col: number) => {
-        console.log(row);
         tbody.value!.children[row].children[col].getElementsByTagName('input')[0].focus();
     };
 

@@ -5,9 +5,9 @@
             <tr v-for="(row, i) in rows" :key="i">
                 <td>
                     <input
-                        class="nickname"
                         type="text"
                         :value="row.nickname"
+                        style="width: 12ch;"
                         @keydown.ctrl.enter="addRow(i)"
                         @keydown.ctrl.delete.prevent="removeRow(i)"
                         @input="updateNickname($event, i)"
@@ -17,7 +17,7 @@
                     {{ row.expectedTotal }}
                 </td>
                 <td>
-                    {{ row.used }}
+                    {{ row.using }}
                 </td>
                 <td>
                     {{ row.surplus }}
@@ -36,6 +36,7 @@ import {
     updateCharacterNickname,
 } from '@/store/mutationTypes';
 import useTableRowController from '@/composables/useTableRowController';
+import Item from '@/Item';
 
 export default defineComponent({
     name: 'Character Table',
@@ -52,11 +53,20 @@ export default defineComponent({
     computed: {
         rows() {
             const days = this.$store.getters.eventDuration;
-            return this.$store.state.characterData.table.map((nickname, i) => {
+            return this.$store.state.characterData.table.map((row, i) => {
                 let expectedTotal = (days / 7) * 300 * 8;
                 if (i === 0) expectedTotal += this.$store.getters.gardeningCoin * days;
-                const surplus = expectedTotal;
-                return { nickname, expectedTotal, used: 0, surplus };
+
+                const using = this.$store.state.itemCartData.table
+                    .filter(cartRow => cartRow[1] === row[0])
+                    .map(cartRow => {
+                        const item: Item = this.$store.getters.getItemByName(cartRow[0]);
+                        if (item.coin === 0) return (cartRow[2] as number) * item.price;
+                        else return 0;
+                    })
+                    .reduce((a, r) => a + r, 0);
+
+                return { nickname: row[0], expectedTotal, using, surplus: expectedTotal - using };
             });
         },
     },
@@ -71,9 +81,3 @@ export default defineComponent({
     },
 });
 </script>
-
-<style lang="scss" scoped>
-.nickname {
-    width: 12ch;
-}
-</style>

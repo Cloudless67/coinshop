@@ -47,14 +47,14 @@ export default {
             coin: 1,
             price: 40,
             qty: 15,
-            perCharacter: true,
+            perCharacter: false,
             exchange: '가능',
         },
     ] as Item[],
     punchKingScore: 0,
     union: 0,
 
-    characterData: new Table([['본캐']]),
+    characterData: new Table([['크림슨임프'], ['테이피르'], ['이심검']]),
     itemCartData: new Table([
         ['', '', 0],
         ['', '', 0],

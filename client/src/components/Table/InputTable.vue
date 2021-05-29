@@ -4,32 +4,32 @@
         <tbody>
             <tr>
                 <td>
+                    이벤트 기간
+                </td>
+                <td>
+                    {{ $store.state.eventStart.toLocaleString() }}
+                </td>
+                <td>
+                    {{ $store.state.eventEnd.toLocaleString() }}
+                </td>
+            </tr>
+            <tr>
+                <td>
                     펀치킹 점수
                 </td>
                 <td>
-                    <input
-                        type="number"
-                        v-model="punchKingScore"
-                        min="0"
-                        max="1500"
-                    />
+                    <input type="number" v-model="punchKingScore" min="0" max="1500" />
                 </td>
+                <td>총 {{ $store.state.punchKingScore * 8 }}점</td>
             </tr>
             <tr>
                 <td>
                     유니온
                 </td>
                 <td>
-                    <input
-                        class="border-end"
-                        type="number"
-                        v-model="union"
-                        min="0"
-                        max="10000"
-                    />
-
-                    {{ $store.getters.gardeningCoin }} 코인 / 일
+                    <input class="border-end" type="number" v-model="union" min="0" max="10000" />
                 </td>
+                <td>{{ $store.getters.gardeningCoin }} 코인 / 일</td>
             </tr>
         </tbody>
     </table>
@@ -64,6 +64,6 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 input {
-    width: 50%;
+    width: 100%;
 }
 </style>
