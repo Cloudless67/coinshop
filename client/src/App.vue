@@ -1,5 +1,7 @@
 <template>
-    <div class="front"></div>
+    <div class="navbar justify-content-center">
+        <h3><b>18주년 블루밍 포레스트 코인샵</b></h3>
+    </div>
     <div class="back">
         <div class="container">
             <Main />
@@ -47,8 +49,8 @@ body {
     background: rgb(255, 255, 255, 0.95);
     border-radius: 1rem;
     padding: 1rem;
-    margin-top: 4rem;
-    margin-bottom: 4rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
     box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.3);
 }
 

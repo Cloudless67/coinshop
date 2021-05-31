@@ -1,3 +1,17 @@
+@font-face {
+    font-family: 'Maplestory';
+    src: url('/fonts/Maplestory Light.ttf');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Maplestory';
+    src: url('/fonts/Maplestory Bold.ttf');
+    font-weight: bold;
+}
+
+$font-family-sans-serif: 'Maplestory';
+
 input {
     border: none;
     outline: none;
