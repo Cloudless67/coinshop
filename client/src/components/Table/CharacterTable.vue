@@ -1,6 +1,6 @@
 <template>
     <table class="table table-sm table-striped">
-        <TableHeader :headers="['캐릭터', '모을 코인', '사용할 코인', '잉여']" />
+        <TableHeader :headers="headers" />
         <tbody ref="tbody">
             <tr v-for="(row, i) in rows" :key="i">
                 <td style="width: 12ch;">
@@ -10,7 +10,7 @@
                         :value="row.nickname"
                         @keydown.ctrl.enter="addRow(i)"
                         @keydown.ctrl.delete.prevent="removeRow(i)"
-                        @input="updateNickname($event, i)"
+                        @input="updateNickname($event.target.value, i)"
                     />
                 </td>
                 <td>
@@ -19,10 +19,10 @@
                 <td>
                     {{ row.using }}
                 </td>
-                <td :class="{ 'table-success': row.surplus >= 0, 'table-danger': row.surplus < 0 }">
+                <td :class="{ 'table-danger': row.surplus < 0 }">
                     {{ row.surplus }}
                 </td>
-                <td v-show="edit" class="btn" @click="removeRow(i)">X</td>
+                <td v-show="edit" class="btn table-danger" @click="removeRow(i)">X</td>
             </tr>
             <tr v-show="edit">
                 <td
@@ -39,9 +39,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
-import { useStore } from 'vuex';
-import { key } from '@/store';
+import { defineComponent } from 'vue';
 import TableHeader from '@/components/Table/TableHeader.vue';
 import {
     addCharacterRow,
@@ -49,7 +47,8 @@ import {
     updateCharacterNickname,
 } from '@/store/mutationTypes';
 import useTableRowController from '@/composables/useTableRowController';
-import Item from '@/Item';
+import useCharacterRows from '@/composables/useCharacterRows';
+import { characterTableHeader } from '@/constants';
 
 export default defineComponent({
     name: 'Character Table',
@@ -63,27 +62,10 @@ export default defineComponent({
     setup() {
         const { tbody, addRow, removeRow } = useTableRowController();
 
-        const store = useStore(key);
-        const rows = computed(() => {
-            const days = store.getters.eventDuration;
-            return store.state.characterData.table.map((row, i) => {
-                let expectedTotal = (days / 7) * 300 * 8;
-                if (i === 0) expectedTotal += store.getters.gardeningCoin * days;
-
-                const using = store.state.itemCartData.table
-                    .filter(cartRow => cartRow[1] === row[0])
-                    .map(cartRow => {
-                        const item: Item = store.getters.getItemByName(cartRow[0]);
-                        if (item && item.coin === 0) return (cartRow[2] as number) * item.price;
-                        else return 0;
-                    })
-                    .reduce((a, r) => a + r, 0);
-
-                return { nickname: row[0], expectedTotal, using, surplus: expectedTotal - using };
-            });
-        });
+        const rows = useCharacterRows();
 
         return {
+            headers: characterTableHeader,
             rows,
             tbody,
             addRow: (row: number, col = 0) => addRow(addCharacterRow, row, col),
@@ -91,12 +73,8 @@ export default defineComponent({
         };
     },
     methods: {
-        updateNickname(e: Event, row: number) {
-            const target = e.currentTarget as HTMLInputElement;
-            this.$store.commit(updateCharacterNickname, {
-                row,
-                nickname: target.value,
-            });
+        updateNickname(nickname: string, row: number) {
+            this.$store.commit(updateCharacterNickname, { row, nickname });
         },
     },
 });

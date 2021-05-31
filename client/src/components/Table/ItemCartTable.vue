@@ -1,19 +1,7 @@
 <template>
     <div class="wrapper">
         <table class="table table-sm table-striped">
-            <TableHeader
-                :headers="[
-                    '코인',
-                    '아이템',
-                    '가격',
-                    '창고\n이동',
-                    '캐릭별\n구매',
-                    '수량',
-                    '구매 캐릭터',
-                    '구매\n수량',
-                    '계',
-                ]"
-            />
+            <TableHeader :headers="headers" />
             <tbody ref="tbody">
                 <tr
                     v-for="(row, i) in rows"
@@ -54,6 +42,7 @@
                     </td>
                     <td class="buying-qty">
                         <input
+                            class="w-100"
                             :value="row.buyingQty"
                             @input="updateBuyingQty($event.target.value, i)"
                             type="number"
@@ -64,7 +53,7 @@
                     <td class="sum">
                         {{ commaSeperatedNumber(row.sum) }}
                     </td>
-                    <td v-show="edit" class="btn" @click="removeRow(i, -1)">X</td>
+                    <td v-show="edit" class="btn table-danger" @click="removeRow(i, -1)">X</td>
                 </tr>
                 <tr v-show="edit">
                     <td
@@ -101,6 +90,7 @@ import {
 import useTableRowController from '@/composables/useTableRowController';
 import useItemCartRows from '@/composables/useItemCartRows';
 import Item from '@/Item';
+import { itemCartTableHeader } from '@/constants';
 
 export default defineComponent({
     name: 'Items Cart Table',
@@ -114,9 +104,10 @@ export default defineComponent({
     setup() {
         const { tbody, addRow, removeRow } = useTableRowController();
 
-        const { rows } = useItemCartRows();
+        const rows = useItemCartRows();
 
         return {
+            headers: itemCartTableHeader,
             rows,
             tbody,
             addRow: (row: number, col = 1) => addRow(addCartItem, row, col),
@@ -182,30 +173,19 @@ export default defineComponent({
 
 .exchangable,
 .qty,
-.price {
+.price,
+.buying-qty {
     min-width: 6ch;
     text-align: center;
 }
 
-.per-character {
+.per-character,
+.sum {
     min-width: 7ch;
     text-align: center;
 }
 
 .character {
     min-width: 12ch;
-}
-
-.buying-qty {
-    min-width: 6ch;
-
-    & input {
-        width: 100%;
-    }
-}
-
-.sum {
-    min-width: 8ch;
-    text-align: center;
 }
 </style>

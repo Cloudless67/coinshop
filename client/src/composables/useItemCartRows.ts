@@ -17,5 +17,5 @@ export default function useTableRowController() {
         }),
     );
 
-    return { rows };
+    return rows;
 }

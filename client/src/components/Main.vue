@@ -1,5 +1,13 @@
 <template>
-    <div class="btn btn-sm btn-outline-dark btn-edit" @click="edit = !edit">수정</div>
+    <div
+        class="btn btn-sm btn-outline-dark btn-edit"
+        :class="{ 'bg-dark': edit, 'text-light': edit }"
+        @click="edit = !edit"
+        role="switch"
+        :aria-checked="edit"
+    >
+        수정
+    </div>
     <div class="row my-2">
         <div class="col-xl-4" style="margin-top: 28px">
             <InputTable />
