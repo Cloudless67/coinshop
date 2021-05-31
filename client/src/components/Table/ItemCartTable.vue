@@ -28,7 +28,7 @@
                         <Autocomplete
                             :value="row.item.name"
                             :itemsList="$store.getters.itemsNameList"
-                            :width="'100%'"
+                            :width="'16ch'"
                             @update="updateItem($event, i)"
                         />
                     </td>

@@ -89,9 +89,9 @@ export default defineComponent({
 .list-group {
     list-style: none;
     position: absolute;
-    width: 30ch;
+    width: fit-content;
     max-height: 40vh;
-    overflow: hidden scroll;
+    overflow: auto;
     white-space: nowrap;
     z-index: 1;
 }

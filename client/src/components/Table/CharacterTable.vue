@@ -19,7 +19,7 @@
                 <td>
                     {{ row.using }}
                 </td>
-                <td>
+                <td :class="{ 'table-success': row.surplus >= 0, 'table-danger': row.surplus < 0 }">
                     {{ row.surplus }}
                 </td>
             </tr>
@@ -61,7 +61,7 @@ export default defineComponent({
                     .filter(cartRow => cartRow[1] === row[0])
                     .map(cartRow => {
                         const item: Item = this.$store.getters.getItemByName(cartRow[0]);
-                        if (item.coin === 0) return (cartRow[2] as number) * item.price;
+                        if (item && item.coin === 0) return (cartRow[2] as number) * item.price;
                         else return 0;
                     })
                     .reduce((a, r) => a + r, 0);
