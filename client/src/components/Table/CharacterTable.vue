@@ -3,11 +3,11 @@
         <TableHeader :headers="['캐릭터', '모을 코인', '사용할 코인', '잉여']" />
         <tbody ref="tbody">
             <tr v-for="(row, i) in rows" :key="i">
-                <td>
+                <td style="width: 12ch;">
                     <input
+                        class="w-100"
                         type="text"
                         :value="row.nickname"
-                        style="width: 12ch;"
                         @keydown.ctrl.enter="addRow(i)"
                         @keydown.ctrl.delete.prevent="removeRow(i)"
                         @input="updateNickname($event, i)"
@@ -22,13 +22,26 @@
                 <td :class="{ 'table-success': row.surplus >= 0, 'table-danger': row.surplus < 0 }">
                     {{ row.surplus }}
                 </td>
+                <td v-show="edit" class="btn" @click="removeRow(i)">X</td>
+            </tr>
+            <tr v-show="edit">
+                <td
+                    colspan="4"
+                    class="text-center"
+                    style="cursor: pointer;"
+                    @click="addRow(rows.length - 1, -1)"
+                >
+                    <span class="w-100">추가</span>
+                </td>
             </tr>
         </tbody>
     </table>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
+import { useStore } from 'vuex';
+import { key } from '@/store';
 import TableHeader from '@/components/Table/TableHeader.vue';
 import {
     addCharacterRow,
@@ -41,26 +54,26 @@ import Item from '@/Item';
 export default defineComponent({
     name: 'Character Table',
     components: { TableHeader },
+    props: {
+        edit: {
+            type: Boolean,
+            required: true,
+        },
+    },
     setup() {
         const { tbody, addRow, removeRow } = useTableRowController();
 
-        return {
-            tbody,
-            addRow: (row: number) => addRow(addCharacterRow, row, 0),
-            removeRow: (row: number) => removeRow(removeCharacterRow, row, 0),
-        };
-    },
-    computed: {
-        rows() {
-            const days = this.$store.getters.eventDuration;
-            return this.$store.state.characterData.table.map((row, i) => {
+        const store = useStore(key);
+        const rows = computed(() => {
+            const days = store.getters.eventDuration;
+            return store.state.characterData.table.map((row, i) => {
                 let expectedTotal = (days / 7) * 300 * 8;
-                if (i === 0) expectedTotal += this.$store.getters.gardeningCoin * days;
+                if (i === 0) expectedTotal += store.getters.gardeningCoin * days;
 
-                const using = this.$store.state.itemCartData.table
+                const using = store.state.itemCartData.table
                     .filter(cartRow => cartRow[1] === row[0])
                     .map(cartRow => {
-                        const item: Item = this.$store.getters.getItemByName(cartRow[0]);
+                        const item: Item = store.getters.getItemByName(cartRow[0]);
                         if (item && item.coin === 0) return (cartRow[2] as number) * item.price;
                         else return 0;
                     })
@@ -68,7 +81,14 @@ export default defineComponent({
 
                 return { nickname: row[0], expectedTotal, using, surplus: expectedTotal - using };
             });
-        },
+        });
+
+        return {
+            rows,
+            tbody,
+            addRow: (row: number, col = 0) => addRow(addCharacterRow, row, col),
+            removeRow: (row: number) => removeRow(removeCharacterRow, row, 0),
+        };
     },
     methods: {
         updateNickname(e: Event, row: number) {

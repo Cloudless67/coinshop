@@ -1,12 +1,14 @@
 import { nextTick, ref } from 'vue';
 import { useStore } from 'vuex';
+import { key } from '@/store';
 
 export default function useTableRowController() {
-    const store = useStore();
+    const store = useStore(key);
     const tbody = ref<HTMLElement>();
 
     const setFocus = (row: number, col: number) => {
-        tbody.value!.children[row].children[col].getElementsByTagName('input')[0].focus();
+        if (col >= 0)
+            tbody.value!.children[row].children[col].getElementsByTagName('input')[0].focus();
     };
 
     const addRow = async (commit: string, row: number, col: number) => {

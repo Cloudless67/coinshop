@@ -3,7 +3,7 @@
         <h3><b>18주년 블루밍 포레스트 코인샵</b></h3>
     </div>
     <div class="back">
-        <div class="container">
+        <div class="container position-relative">
             <Main />
         </div>
     </div>

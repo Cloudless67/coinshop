@@ -48,7 +48,7 @@
                         <Autocomplete
                             :value="row.character"
                             :itemsList="$store.state.characterData.columns[0]"
-                            :width="'12ch'"
+                            :width="'100%'"
                             @update="updateCharacter($event, i)"
                         />
                     </td>
@@ -63,6 +63,17 @@
                     </td>
                     <td class="sum">
                         {{ commaSeperatedNumber(row.sum) }}
+                    </td>
+                    <td v-show="edit" class="btn" @click="removeRow(i, -1)">X</td>
+                </tr>
+                <tr v-show="edit">
+                    <td
+                        colspan="9"
+                        class="text-center"
+                        style="cursor: pointer;"
+                        @click="addRow(rows.length - 1, -1)"
+                    >
+                        <span class="w-100">추가</span>
                     </td>
                 </tr>
                 <tr class="text-center" v-for="(coinName, i) in $store.state.coinNames" :key="i">
@@ -88,32 +99,29 @@ import {
     updateCartItem,
 } from '@/store/mutationTypes';
 import useTableRowController from '@/composables/useTableRowController';
+import useItemCartRows from '@/composables/useItemCartRows';
 import Item from '@/Item';
 
 export default defineComponent({
     name: 'Items Cart Table',
     components: { TableHeader, Autocomplete },
+    props: {
+        edit: {
+            type: Boolean,
+            required: true,
+        },
+    },
     setup() {
         const { tbody, addRow, removeRow } = useTableRowController();
 
+        const { rows } = useItemCartRows();
+
         return {
+            rows,
             tbody,
-            addRow: (row: number) => addRow(addCartItem, row, 1),
-            removeRow: (row: number) => removeRow(removeCartItem, row, 1),
+            addRow: (row: number, col = 1) => addRow(addCartItem, row, col),
+            removeRow: (row: number, col: number = 1) => removeRow(removeCartItem, row, col),
         };
-    },
-    computed: {
-        rows() {
-            return this.$store.state.itemCartData.table.map(row => {
-                const item = this.$store.getters.getItemByName(row[0]);
-                return {
-                    item: item || Item.createEmptyItem(row[0] as string),
-                    character: row[1] as string,
-                    buyingQty: row[2] as number,
-                    sum: item ? (row[2] as number) * item.price : 0,
-                };
-            });
-        },
     },
     methods: {
         updateItem(item: string, row: number) {
@@ -164,7 +172,8 @@ export default defineComponent({
 }
 
 .coin-name {
-    min-width: 10ch;
+    min-width: 8ch;
+    width: fit-content;
 }
 
 .item-name {
@@ -181,6 +190,10 @@ export default defineComponent({
 .per-character {
     min-width: 7ch;
     text-align: center;
+}
+
+.character {
+    min-width: 12ch;
 }
 
 .buying-qty {
