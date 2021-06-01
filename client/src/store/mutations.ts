@@ -1,3 +1,4 @@
+import Item from '@/Item';
 import { EventDuration } from '@/types';
 import { State } from 'vue';
 import * as mutations from './mutationTypes';
@@ -6,6 +7,10 @@ export default {
     [mutations.setEventPeriod](state: State, { eventStart, eventEnd }: EventDuration) {
         state.eventStart = eventStart;
         state.eventEnd = eventEnd;
+    },
+
+    [mutations.setItemsData](state: State, data: Item[]) {
+        state.itemsList = data;
     },
 
     [mutations.updatePunchKingScore](state: State, score: number) {

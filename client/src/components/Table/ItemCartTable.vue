@@ -24,10 +24,10 @@
                         {{ commaSeperatedNumber(row.item.price) }}
                     </td>
                     <td class="exchangable">
-                        {{ row.item.exchange }}
+                        {{ row.item.storageUsage }}
                     </td>
                     <td class="per-character">
-                        {{ row.item.perCharacter ? 'O' : 'X' }}
+                        {{ row.item.worldShare ? 'O' : 'X' }}
                     </td>
                     <td class="qty">
                         {{ row.item.qty }}
@@ -133,7 +133,7 @@ export default defineComponent({
             this.$forceUpdate();
         },
         itemsLeft(item: Item, exclusiveRow: number) {
-            if (item.perCharacter) return item.qty;
+            if (item.worldShare) return item.qty;
             else {
                 const sum = this.rows
                     .filter((r, i) => r.item.name === item.name && exclusiveRow !== i)
@@ -187,5 +187,6 @@ export default defineComponent({
 
 .character {
     min-width: 12ch;
+    width: 12ch;
 }
 </style>

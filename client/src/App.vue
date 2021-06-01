@@ -13,7 +13,8 @@
 import { defineComponent } from 'vue';
 import { DateTime } from 'luxon';
 import Main from '@/components/Main.vue';
-import { setEventPeriod } from './store/mutationTypes';
+import { setEventPeriod, setItemsData } from './store/mutationTypes';
+import Item from './Item';
 
 export default defineComponent({
     name: 'App',
@@ -24,11 +25,14 @@ export default defineComponent({
             eventEnd: DateTime.fromISO('2021-06-16'),
         };
     },
-    created() {
+    async created() {
         this.$store.commit(setEventPeriod, {
             eventStart: this.eventStart,
             eventEnd: this.eventEnd,
         });
+
+        const items: Item[] = await fetch('/api').then(res => res.json());
+        this.$store.commit(setItemsData, items);
     },
 });
 </script>

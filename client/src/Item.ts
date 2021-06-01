@@ -3,26 +3,29 @@ export default class Item {
     coin: number;
     price: number;
     qty: number;
-    perCharacter: boolean;
-    exchange: '가능' | '불가' | '1 회';
+    qtyDesc: string;
+    worldShare: boolean;
+    storageUsage: string;
 
     constructor(
         name: string,
         coin: number,
         price: number,
         qty: number,
-        perCharacter: boolean,
-        exchange: '가능' | '불가' | '1 회',
+        worldShare: boolean,
+        storageUsage: string,
+        qtyDesc = '',
     ) {
         this.name = name;
         this.coin = coin;
         this.price = price;
         this.qty = qty;
-        this.perCharacter = perCharacter;
-        this.exchange = exchange;
+        this.qtyDesc = qtyDesc;
+        this.worldShare = worldShare;
+        this.storageUsage = storageUsage;
     }
 
     public static createEmptyItem(name?: string) {
-        return new Item(name || '', -1, 0, 0, true, '가능');
+        return new Item(name || '', -1, 0, 0, true, '');
     }
 }

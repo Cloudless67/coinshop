@@ -16,7 +16,7 @@
             <li
                 class="list-group-item"
                 v-for="(cand, i) in candidates"
-                :key="cand"
+                :key="i"
                 :class="{ active: i === focus }"
                 @mousedown.prevent="select(cand)"
                 @mouseover="focus = i"
