@@ -1,10 +1,14 @@
 <template>
-    <div class="navbar justify-content-center">
-        <h3><b>18주년 블루밍 포레스트 코인샵</b></h3>
-    </div>
-    <div class="back">
-        <div class="container position-relative">
-            <Main />
+    <div>
+        <div class="navbar justify-content-center">
+            <h3>
+                <b>{{ eventName }} 코인샵</b>
+            </h3>
+        </div>
+        <div class="back">
+            <div class="container position-relative">
+                <Main />
+            </div>
         </div>
     </div>
 </template>
@@ -13,25 +17,28 @@
 import { defineComponent } from 'vue';
 import { DateTime } from 'luxon';
 import Main from '@/components/Main.vue';
-import { setEventPeriod, setItemsData } from './store/mutationTypes';
+import { setCoinsData, setEventPeriod, setItemsData } from './store/mutationTypes';
 import Item from './Item';
+import Coin from './Coin';
 
 export default defineComponent({
     name: 'App',
     components: { Main },
     data() {
-        return {
-            eventStart: DateTime.fromISO('2021-04-22'),
-            eventEnd: DateTime.fromISO('2021-06-16'),
-        };
+        return { eventName: '' };
     },
     async created() {
+        const eventInfo = await fetch('/api').then(res => res.json());
+        this.eventName = eventInfo.name;
         this.$store.commit(setEventPeriod, {
-            eventStart: this.eventStart,
-            eventEnd: this.eventEnd,
+            eventStart: DateTime.fromISO(eventInfo.startDate),
+            eventEnd: DateTime.fromISO(eventInfo.endDate),
         });
 
-        const items: Item[] = await fetch('/api').then(res => res.json());
+        const coins: Coin[] = await fetch('/api/coins').then(res => res.json());
+        this.$store.commit(setCoinsData, coins);
+
+        const items: Item[] = await fetch('/api/items').then(res => res.json());
         this.$store.commit(setItemsData, items);
     },
 });

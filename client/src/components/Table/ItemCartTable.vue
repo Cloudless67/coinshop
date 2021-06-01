@@ -30,7 +30,7 @@
                         {{ row.item.worldShare ? 'O' : 'X' }}
                     </td>
                     <td class="qty">
-                        {{ row.item.qty }}
+                        {{ row.item.qty >= 0 ? row.item.qty : '\u221e' }}
                     </td>
                     <td class="character">
                         <Autocomplete
@@ -55,7 +55,7 @@
                     </td>
                     <td v-show="edit" class="btn table-danger" @click="removeRow(i, -1)">X</td>
                 </tr>
-                <tr v-show="edit">
+                <tr v-if="edit">
                     <td
                         colspan="9"
                         class="text-center"
@@ -65,8 +65,12 @@
                         <span class="w-100">추가</span>
                     </td>
                 </tr>
-                <tr class="text-center" v-for="(coinName, i) in $store.state.coinNames" :key="i">
-                    <td colspan="8">{{ coinName }}</td>
+                <tr
+                    class="text-center"
+                    v-for="(coin, i) in $store.state.coins.filter(coin => !coin.worldScope)"
+                    :key="i"
+                >
+                    <td colspan="8">{{ coin.name }}</td>
                     <td>
                         {{ commaSeperatedNumber(totalSum(i)) }}
                     </td>
@@ -133,7 +137,8 @@ export default defineComponent({
             this.$forceUpdate();
         },
         itemsLeft(item: Item, exclusiveRow: number) {
-            if (item.worldShare) return item.qty;
+            if (item.qty < 0) return Infinity;
+            else if (item.worldShare) return item.qty;
             else {
                 const sum = this.rows
                     .filter((r, i) => r.item.name === item.name && exclusiveRow !== i)
@@ -142,7 +147,7 @@ export default defineComponent({
             }
         },
         coinName(coinID: number) {
-            if (coinID >= 0) return this.$store.state.coinNames[coinID];
+            if (coinID >= 0) return this.$store.getters.getCoinByID(coinID).name;
             else return '';
         },
         commaSeperatedNumber(num: number) {

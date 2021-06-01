@@ -22,4 +22,10 @@ export default {
             return state.itemsList.find(item => item.name === name);
         };
     },
+
+    getCoinByID(state: State) {
+        return (id: number) => {
+            return state.coins.find(coin => coin.id === id);
+        };
+    },
 };

@@ -2,6 +2,7 @@ import { ComponentCustomProperties } from 'vue';
 import { Store } from 'vuex';
 import { DateTime } from 'luxon';
 import Table from '@/table/Table';
+import Coin from '@/Coin';
 
 declare module '@vue/runtime-core' {
     // declare your own store states
@@ -9,7 +10,7 @@ declare module '@vue/runtime-core' {
         eventName: string;
         eventStart: DateTime;
         eventEnd: DateTime;
-        coinNames: string[];
+        coins: Coin[];
         punchKingName: string;
 
         itemsList: Item[];

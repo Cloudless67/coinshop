@@ -1,3 +1,4 @@
+import Coin from '@/Coin';
 import Item from '@/Item';
 import { EventDuration } from '@/types';
 import { State } from 'vue';
@@ -11,6 +12,10 @@ export default {
 
     [mutations.setItemsData](state: State, data: Item[]) {
         state.itemsList = data;
+    },
+
+    [mutations.setCoinsData](state: State, data: Coin[]) {
+        state.coins = data;
     },
 
     [mutations.updatePunchKingScore](state: State, score: number) {
@@ -48,7 +53,7 @@ export default {
     },
 
     [mutations.updateBuyingQty](state: State, { row, qty }: { row: number; qty: number }) {
-        state.itemCartData.table[row][2] = qty;
+        state.itemCartData.table[row][2] = qty < Infinity ? qty : 0;
     },
 
     [mutations.addCartItem](state: State, row: number) {

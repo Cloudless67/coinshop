@@ -1,12 +1,13 @@
 import Table from '@/table/Table';
 import Item from '@/Item';
 import { DateTime } from 'luxon';
+import Coin from '@/Coin';
 
 export default {
     eventName: '18th',
     eventStart: DateTime.fromMillis(0),
     eventEnd: DateTime.fromMillis(0),
-    coinNames: ['블루밍 코인', '위시코인'],
+    coins: [] as Coin[],
     punchKingName: '돌의 정령을 도와달람',
 
     itemsList: [] as Item[],

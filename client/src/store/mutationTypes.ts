@@ -1,5 +1,6 @@
 export const setEventPeriod = 'setEventPeriod';
 export const setItemsData = 'setItemsData';
+export const setCoinsData = 'setCoinsData';
 export const updatePunchKingScore = 'updatePunchKingScore';
 export const updateUnion = 'updateUnion';
 
