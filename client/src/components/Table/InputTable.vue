@@ -17,14 +17,14 @@
                     <input class="w-75" type="number" v-model="punchKingScore" min="0" max="1500" />
                     점
                 </td>
-                <td>총 {{ $store.state.punchKingScore * 8 }}점</td>
+                <td>총 {{ commaSeperatedNumber($store.state.punchKingScore * 8) }}점</td>
             </tr>
             <tr>
                 <td>{{ $store.state.neoCoreName }}</td>
                 <td>
                     <input class="w-75" type="number" v-model="neoCoreQty" min="0" max="400" /> 개
                 </td>
-                <td>총 {{ $store.state.neoCoreQty * 7 }}개</td>
+                <td>총 {{ commaSeperatedNumber($store.state.neoCoreQty * 7) }}개</td>
             </tr>
             <tr>
                 <td>{{ $store.state.coinBonusName }}</td>
@@ -37,11 +37,15 @@
 </template>
 
 <script lang="ts">
+import useUtilities from '@/composables/useUtilities';
 import { updateNeoCoreGain, updatePunchKingScore, updateCoinBonus } from '@/store/mutationTypes';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
     name: 'Input Table',
+    setup() {
+        return useUtilities();
+    },
     computed: {
         punchKingScore: {
             get() {

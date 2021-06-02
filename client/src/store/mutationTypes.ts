@@ -8,6 +8,7 @@ export const updateCoinBonus = 'updateCoinBonus';
 // Character Mutations
 export const setCharacterData = 'setCharacterData';
 export const updateCharacterNickname = 'updateCharacterNickname';
+export const updateCharacterCurrentCoins = 'updateCharacterCurrentCoins';
 export const addCharacterRow = 'addCharacterRow';
 export const removeCharacterRow = 'removeCharacterRow';
 

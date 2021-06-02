@@ -10,20 +10,24 @@
                         :value="row.nickname"
                         @keydown.ctrl.enter="addRow(i)"
                         @keydown.ctrl.delete.prevent="removeRow(i)"
-                        @input="updateNickname($event.target.value, i)"
+                        @input="updateNickname(i, $event.target.value)"
                     />
                 </td>
                 <td>
-                    {{ row.currentCoins }}
+                    <input
+                        style="width: 6ch;"
+                        :value="commaSeperatedNumber(row.currentCoins)"
+                        @input="updateCurrentCoins(i, $event.target.value)"
+                    />
                 </td>
                 <td>
-                    {{ row.coinToCollect }}
+                    {{ commaSeperatedNumber(row.toCollect) }}
                 </td>
                 <td>
-                    {{ row.using }}
+                    {{ commaSeperatedNumber(row.toUse) }}
                 </td>
-                <td :class="{ 'table-danger': row.surplus < 0 }">
-                    {{ row.surplus }}
+                <td :class="{ 'table-danger': surplus(row) < 0 }">
+                    {{ commaSeperatedNumber(surplus(row)) }}
                 </td>
                 <td v-show="edit" class="btn table-danger" @click="removeRow(i)">X</td>
             </tr>
@@ -47,11 +51,20 @@ import TableHeader from '@/components/Table/TableHeader.vue';
 import {
     addCharacterRow,
     removeCharacterRow,
+    updateCharacterCurrentCoins,
     updateCharacterNickname,
 } from '@/store/mutationTypes';
 import useTableRowController from '@/composables/useTableRowController';
 import useCharacterRows from '@/composables/useCharacterRows';
+import useUtilities from '@/composables/useUtilities';
 import { characterTableHeader } from '@/constants';
+
+type RowData = {
+    nickname: string;
+    currentCoins: number;
+    toCollect: number;
+    toUse: number;
+};
 
 export default defineComponent({
     name: 'Character Table',
@@ -67,17 +80,26 @@ export default defineComponent({
 
         const rows = useCharacterRows();
 
+        const { commaSeperatedNumber } = useUtilities();
+
         return {
             headers: characterTableHeader,
             rows,
             tbody,
             addRow: (row: number, col = 0) => addRow(addCharacterRow, row, col),
             removeRow: (row: number) => removeRow(removeCharacterRow, row, 0),
+            surplus: (rowData: RowData) => rowData.currentCoins + rowData.toCollect - rowData.toUse,
+            commaSeperatedNumber,
         };
     },
     methods: {
-        updateNickname(nickname: string, row: number) {
-            this.$store.commit(updateCharacterNickname, { row, nickname });
+        updateNickname(row: number, value: string) {
+            this.$store.commit(updateCharacterNickname, { row, value });
+        },
+        updateCurrentCoins(row: number, value: string) {
+            const num = Math.max(0, Number.parseInt(value.replaceAll(',', '')));
+            this.$store.commit(updateCharacterCurrentCoins, { row, value: num || 0 });
+            this.$forceUpdate();
         },
     },
 });

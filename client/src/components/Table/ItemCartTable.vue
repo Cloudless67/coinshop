@@ -17,7 +17,7 @@
                             :value="row.item.name"
                             :itemsList="$store.getters.itemsNameList"
                             :width="'16ch'"
-                            @update="updateItem($event, i)"
+                            @update="updateItem(i, $event)"
                         />
                     </td>
                     <td class="price">
@@ -38,7 +38,7 @@
                             :value="row.character"
                             :itemsList="$store.state.characterData.columns[0]"
                             :width="'100%'"
-                            @update="updateCharacter($event, i)"
+                            @update="updateCharacter(i, $event)"
                         />
                         <div v-else class="w-100 text-center">-</div>
                     </td>
@@ -46,7 +46,7 @@
                         <input
                             class="w-100"
                             :value="row.buyingQty"
-                            @input="updateBuyingQty($event.target.value, i)"
+                            @input="updateBuyingQty(i, $event.target.value)"
                             type="number"
                             min="0"
                             max="999"
@@ -91,6 +91,7 @@ import {
 } from '@/store/mutationTypes';
 import useTableRowController from '@/composables/useTableRowController';
 import useItemCartRows from '@/composables/useItemCartRows';
+import useUtilities from '@/composables/useUtilities';
 import Item from '@/Item';
 import { itemCartTableHeader } from '@/constants';
 
@@ -108,30 +109,33 @@ export default defineComponent({
 
         const rows = useItemCartRows();
 
+        const { commaSeperatedNumber } = useUtilities();
+
         return {
             headers: itemCartTableHeader,
             rows,
             tbody,
             addRow: (row: number, col = 1) => addRow(addCartItem, row, col),
             removeRow: (row: number, col: number = 1) => removeRow(removeCartItem, row, col),
+            commaSeperatedNumber,
         };
     },
     methods: {
-        updateItem(item: string, row: number) {
-            this.$store.commit(updateCartItem, { row, item });
+        updateItem(row: number, value: string) {
+            this.$store.commit(updateCartItem, { row, value });
             this.$nextTick(() => {
                 this.$store.commit(updateBuyingQty, {
                     row,
-                    qty: this.itemsLeft(this.rows[row].item, row),
+                    value: this.itemsLeft(this.rows[row].item, row),
                 });
             });
         },
-        updateCharacter(nickname: string, row: number) {
-            this.$store.commit(updateCartCharacter, { row, nickname });
+        updateCharacter(row: number, value: string) {
+            this.$store.commit(updateCartCharacter, { row, value });
         },
-        updateBuyingQty(qty: number, row: number) {
-            qty = Math.min(this.itemsLeft(this.rows[row].item, row), qty);
-            this.$store.commit(updateBuyingQty, { row, qty });
+        updateBuyingQty(row: number, value: number) {
+            value = Math.min(this.itemsLeft(this.rows[row].item, row), value);
+            this.$store.commit(updateBuyingQty, { row, value });
             this.$forceUpdate();
         },
         itemsLeft(item: Item, exclusiveRow: number) {
@@ -150,9 +154,6 @@ export default defineComponent({
         coinName(coinID: number) {
             if (coinID >= 0) return this.$store.getters.getCoinByID(coinID).name;
             else return '';
-        },
-        commaSeperatedNumber(num: number) {
-            return num.toString().replaceAll(/\B(?=(\d{3})+$)/g, ',');
         },
         totalSum(coin: number) {
             return this.rows.filter(r => r.item.coin === coin).reduce((a, r) => a + r.sum, 0);

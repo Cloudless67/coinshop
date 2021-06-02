@@ -47,6 +47,9 @@ export default defineComponent({
             );
             localStorage.setItem('items', JSON.stringify(this.$store.state.itemCartData.table));
         },
+        reset() {
+            localStorage.clear();
+        },
     },
 });
 </script>

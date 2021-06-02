@@ -18,12 +18,12 @@ export default {
         state.coins = data;
     },
 
-    [mutations.updatePunchKingScore](state: State, score: number) {
-        state.punchKingScore = score;
+    [mutations.updatePunchKingScore](state: State, value: number) {
+        state.punchKingScore = value;
     },
 
-    [mutations.updateNeoCoreGain](state: State, gain: number) {
-        state.neoCoreQty = gain;
+    [mutations.updateNeoCoreGain](state: State, value: number) {
+        state.neoCoreQty = value;
     },
 
     [mutations.updateCoinBonus](state: State, value: number) {
@@ -36,13 +36,20 @@ export default {
 
     [mutations.updateCharacterNickname](
         state: State,
-        { row, nickname }: { row: number; nickname: string },
+        { row, value }: { row: number; value: string },
     ) {
-        state.characterData.table[row][0] = nickname;
+        state.characterData.table[row][0] = value;
+    },
+
+    [mutations.updateCharacterCurrentCoins](
+        state: State,
+        { row, value }: { row: number; value: number },
+    ) {
+        state.characterData.table[row][1] = value;
     },
 
     [mutations.addCharacterRow](state: State, row: number) {
-        state.characterData.addRow(row, ['']);
+        state.characterData.addRow(row, ['', 0]);
     },
 
     [mutations.removeCharacterRow](state: State, row: number) {
@@ -53,19 +60,17 @@ export default {
         state.itemCartData.table = table;
     },
 
-    [mutations.updateCartItem](state: State, { row, item }: { row: number; item: string }) {
-        state.itemCartData.table[row][0] = item;
+    [mutations.updateCartItem](state: State, { row, value }: { row: number; value: string }) {
+        state.itemCartData.table[row][0] = value;
     },
 
-    [mutations.updateCartCharacter](
-        state: State,
-        { row, nickname }: { row: number; nickname: string },
-    ) {
-        state.itemCartData.table[row][1] = nickname;
+    [mutations.updateCartCharacter](state: State, { row, value }: { row: number; value: string }) {
+        state.itemCartData.table[row][1] = value;
     },
 
-    [mutations.updateBuyingQty](state: State, { row, qty }: { row: number; qty: number }) {
-        state.itemCartData.table[row][2] = qty < Infinity ? qty : 0;
+    [mutations.updateBuyingQty](state: State, { row, value }: { row: number; value: number }) {
+        console.log(row, value);
+        state.itemCartData.table[row][2] = value < Infinity ? value : 0;
     },
 
     [mutations.addCartItem](state: State, row: number) {
