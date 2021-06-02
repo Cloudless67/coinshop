@@ -17,5 +17,6 @@ export const setCartData = 'setCartData';
 export const updateCartItem = 'updateCartItem';
 export const updateCartCharacter = 'updateCartCharacter';
 export const updateBuyingQty = 'updateBuyingQty';
+export const toggleBuyState = 'toggleBuyState';
 export const addCartItem = 'addCartItem';
 export const removeCartItem = 'removeCartItem';

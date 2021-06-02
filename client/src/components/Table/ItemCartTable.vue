@@ -4,10 +4,13 @@
             <TableHeader :headers="headers" />
             <tbody ref="tbody">
                 <tr
+                    class="item-cart-row"
                     v-for="(row, i) in rows"
                     :key="i"
+                    :class="{ 'text-danger': row.bought }"
                     @keydown.ctrl.enter="addRow(i)"
                     @keydown.ctrl.delete.prevent="removeRow(i)"
+                    @dblclick.prevent="toggleBuy(i)"
                 >
                     <td class="coin-name">
                         {{ coinName(row.item.coin) }}
@@ -18,6 +21,7 @@
                             :itemsList="$store.getters.itemsNameList"
                             :width="'16ch'"
                             @update="updateItem(i, $event)"
+                            :disabled="row.bought"
                         />
                     </td>
                     <td class="price">
@@ -37,6 +41,7 @@
                             v-if="showCharacterInput(row.item)"
                             :value="row.character"
                             :itemsList="$store.state.characterData.columns[0]"
+                            :disabled="row.bought"
                             :width="'100%'"
                             @update="updateCharacter(i, $event)"
                         />
@@ -47,6 +52,7 @@
                             class="w-100"
                             :value="row.buyingQty"
                             @input="updateBuyingQty(i, $event.target.value)"
+                            :disabled="row.bought"
                             type="number"
                             min="0"
                             max="999"
@@ -55,7 +61,13 @@
                     <td class="sum">
                         {{ commaSeperatedNumber(row.sum) }}
                     </td>
-                    <td v-show="edit" class="btn table-danger" @click="removeRow(i, -1)">X</td>
+                    <td
+                        v-show="edit && !row.bought"
+                        class="btn table-danger"
+                        @click="removeRow(i, -1)"
+                    >
+                        X
+                    </td>
                 </tr>
                 <tr v-if="edit">
                     <td
@@ -85,9 +97,11 @@ import Autocomplete from '@/components/Autocomplete.vue';
 import {
     addCartItem,
     removeCartItem,
+    toggleBuyState,
     updateBuyingQty,
     updateCartCharacter,
     updateCartItem,
+    updateCharacterCurrentCoins,
 } from '@/store/mutationTypes';
 import useTableRowController from '@/composables/useTableRowController';
 import useItemCartRows from '@/composables/useItemCartRows';
@@ -158,6 +172,22 @@ export default defineComponent({
         totalSum(coin: number) {
             return this.rows.filter(r => r.item.coin === coin).reduce((a, r) => a + r.sum, 0);
         },
+        toggleBuy(row: number) {
+            const buy = !this.rows[row].bought;
+            this.$store.commit(toggleBuyState, row);
+
+            if (this.rows[row].character) {
+                const characterRow = this.$store.state.characterData.table.findIndex(
+                    ([nickname, _]) => nickname === this.rows[row].character,
+                );
+                this.$store.commit(updateCharacterCurrentCoins, {
+                    row: characterRow,
+                    value:
+                        (this.$store.state.characterData.table[characterRow][1] as number) +
+                        this.rows[row].sum * (buy ? -1 : 1),
+                });
+            }
+        },
     },
 });
 </script>
@@ -167,6 +197,14 @@ export default defineComponent({
     position: relative;
     overflow: auto;
     height: 80vh;
+}
+
+.item-cart-row {
+    user-select: none;
+
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 .coin-name {

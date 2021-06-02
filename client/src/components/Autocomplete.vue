@@ -4,6 +4,7 @@
             type="text"
             :value="value"
             :style="{ width }"
+            :disabled="disabled"
             @keydown.down="handleDown"
             @keydown.up="handleUp"
             @keydown.enter.exact="handleEnter"
@@ -43,6 +44,7 @@ export default defineComponent({
             type: Array as PropType<string[]>,
             required: true,
         },
+        disabled: { type: Boolean, default: false },
         width: String,
     },
     data() {

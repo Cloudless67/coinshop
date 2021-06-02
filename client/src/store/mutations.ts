@@ -69,8 +69,11 @@ export default {
     },
 
     [mutations.updateBuyingQty](state: State, { row, value }: { row: number; value: number }) {
-        console.log(row, value);
         state.itemCartData.table[row][2] = value < Infinity ? value : 0;
+    },
+
+    [mutations.toggleBuyState](state: State, row: number) {
+        state.itemCartData.table[row][3] = (state.itemCartData.table[row][3] as number) ^ 1;
     },
 
     [mutations.addCartItem](state: State, row: number) {

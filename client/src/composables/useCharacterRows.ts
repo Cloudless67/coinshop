@@ -38,7 +38,7 @@ export default function useCharacterRows() {
 
     function calculateCoinsToUse(row: (string | number)[]) {
         return store.state.itemCartData.table
-            .filter(cartRow => cartRow[1] === row[0])
+            .filter(cartRow => cartRow[1] === row[0] && !cartRow[3])
             .map(cartRow => {
                 const item: Item = store.getters.getItemByName(cartRow[0]);
                 if (item && item.coin === 0) return (cartRow[2] as number) * item.price;
