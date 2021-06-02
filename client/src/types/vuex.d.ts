@@ -12,11 +12,15 @@ declare module '@vue/runtime-core' {
         eventEnd: DateTime;
         coins: Coin[];
         punchKingName: string;
+        neoCoreName: string;
+        coinBonusName: string;
 
         itemsList: Item[];
 
         punchKingScore: number;
-        union: number;
+        neoCoreQty: number;
+        coinBonus: number;
+
         characterData: Table;
         itemCartData: Table;
     }

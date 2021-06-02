@@ -22,8 +22,16 @@ export default {
         state.punchKingScore = score;
     },
 
-    [mutations.updateUnion](state: State, value: number) {
-        state.union = value;
+    [mutations.updateNeoCoreGain](state: State, gain: number) {
+        state.neoCoreQty = gain;
+    },
+
+    [mutations.updateCoinBonus](state: State, value: number) {
+        state.coinBonus = value;
+    },
+
+    [mutations.setCharacterData](state: State, table: (string | number)[][]) {
+        state.characterData.table = table;
     },
 
     [mutations.updateCharacterNickname](
@@ -39,6 +47,10 @@ export default {
 
     [mutations.removeCharacterRow](state: State, row: number) {
         state.characterData.removeRow(row);
+    },
+
+    [mutations.setCartData](state: State, table: (string | number)[][]) {
+        state.itemCartData.table = table;
     },
 
     [mutations.updateCartItem](state: State, { row, item }: { row: number; item: string }) {

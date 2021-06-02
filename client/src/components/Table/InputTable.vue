@@ -6,49 +6,38 @@
                 <td>
                     이벤트 기간
                 </td>
-                <td>
-                    {{ $store.state.eventStart.toLocaleString() }}
-                </td>
-                <td>
+                <td colspan="2">
+                    {{ $store.state.eventStart.toLocaleString() }} ~
                     {{ $store.state.eventEnd.toLocaleString() }}
                 </td>
             </tr>
             <tr>
+                <td>{{ $store.state.punchKingName }}</td>
                 <td>
-                    펀치킹 점수
-                </td>
-                <td>
-                    <input
-                        class="w-100"
-                        type="number"
-                        v-model="punchKingScore"
-                        min="0"
-                        max="1500"
-                    />
+                    <input class="w-75" type="number" v-model="punchKingScore" min="0" max="1500" />
+                    점
                 </td>
                 <td>총 {{ $store.state.punchKingScore * 8 }}점</td>
             </tr>
             <tr>
+                <td>{{ $store.state.neoCoreName }}</td>
                 <td>
-                    유니온
+                    <input class="w-75" type="number" v-model="neoCoreQty" min="0" max="400" /> 개
                 </td>
-                <td>
-                    <input
-                        class="w-100 border-end"
-                        type="number"
-                        v-model="union"
-                        min="0"
-                        max="10000"
-                    />
+                <td>총 {{ $store.state.neoCoreQty * 7 }}개</td>
+            </tr>
+            <tr>
+                <td>{{ $store.state.coinBonusName }}</td>
+                <td colspan="2">
+                    <input class="w-75" type="number" v-model="coinBonus" min="0" max="10000" /> 개
                 </td>
-                <td>{{ $store.getters.gardeningCoin }} 코인 / 일</td>
             </tr>
         </tbody>
     </table>
 </template>
 
 <script lang="ts">
-import { updatePunchKingScore, updateUnion } from '@/store/mutationTypes';
+import { updateNeoCoreGain, updatePunchKingScore, updateCoinBonus } from '@/store/mutationTypes';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -59,15 +48,27 @@ export default defineComponent({
                 return this.$store.state.punchKingScore;
             },
             set(value: number) {
-                if (value >= 0) this.$store.commit(updatePunchKingScore, value);
+                value = Math.max(Math.min(1500, value), 0);
+                this.$store.commit(updatePunchKingScore, value);
+                this.$forceUpdate();
             },
         },
-        union: {
+        neoCoreQty: {
             get() {
-                return this.$store.state.union;
+                return this.$store.state.neoCoreQty;
             },
             set(value: number) {
-                this.$store.commit(updateUnion, value);
+                value = Math.max(Math.min(400, value), 0);
+                this.$store.commit(updateNeoCoreGain, value);
+                this.$forceUpdate();
+            },
+        },
+        coinBonus: {
+            get() {
+                return this.$store.state.coinBonus;
+            },
+            set(value: number) {
+                this.$store.commit(updateCoinBonus, value);
             },
         },
     },

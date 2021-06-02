@@ -17,7 +17,16 @@
 import { defineComponent } from 'vue';
 import { DateTime } from 'luxon';
 import Main from '@/components/Main.vue';
-import { setCoinsData, setEventPeriod, setItemsData } from './store/mutationTypes';
+import {
+    setCartData,
+    setCharacterData,
+    setCoinsData,
+    setEventPeriod,
+    setItemsData,
+    updateCoinBonus,
+    updateNeoCoreGain,
+    updatePunchKingScore,
+} from './store/mutationTypes';
 import Item from './Item';
 import Coin from './Coin';
 
@@ -40,6 +49,17 @@ export default defineComponent({
 
         const items: Item[] = await fetch('/api/items').then(res => res.json());
         this.$store.commit(setItemsData, items);
+
+        if (localStorage.getItem('punchking'))
+            this.$store.commit(updatePunchKingScore, localStorage.getItem('punchking'));
+        if (localStorage.getItem('neocore'))
+            this.$store.commit(updateNeoCoreGain, localStorage.getItem('neocore'));
+        if (localStorage.getItem('coin-bonus'))
+            this.$store.commit(updateCoinBonus, localStorage.getItem('coin-bonus'));
+        if (localStorage.getItem('characters'))
+            this.$store.commit(setCharacterData, JSON.parse(localStorage.getItem('characters')!));
+        if (localStorage.getItem('items'))
+            this.$store.commit(setCartData, JSON.parse(localStorage.getItem('items')!));
     },
 });
 </script>

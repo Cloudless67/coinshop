@@ -34,11 +34,13 @@
                     </td>
                     <td class="character">
                         <Autocomplete
+                            v-if="showCharacterInput(row.item)"
                             :value="row.character"
                             :itemsList="$store.state.characterData.columns[0]"
                             :width="'100%'"
                             @update="updateCharacter($event, i)"
                         />
+                        <div v-else class="w-100 text-center">-</div>
                     </td>
                     <td class="buying-qty">
                         <input
@@ -65,11 +67,7 @@
                         <span class="w-100">추가</span>
                     </td>
                 </tr>
-                <tr
-                    class="text-center"
-                    v-for="(coin, i) in $store.state.coins.filter(coin => !coin.worldScope)"
-                    :key="i"
-                >
+                <tr class="text-center" v-for="(coin, i) in $store.state.coins" :key="i">
                     <td colspan="8">{{ coin.name }}</td>
                     <td>
                         {{ commaSeperatedNumber(totalSum(i)) }}
@@ -145,6 +143,9 @@ export default defineComponent({
                     .reduce((a, r) => a + r.buyingQty, 0);
                 return item.qty - sum;
             }
+        },
+        showCharacterInput(item: Item) {
+            return item.coin >= 0 && !this.$store.getters.getCoinByID(item.coin).worldScope;
         },
         coinName(coinID: number) {
             if (coinID >= 0) return this.$store.getters.getCoinByID(coinID).name;

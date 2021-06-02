@@ -90,7 +90,7 @@ export default defineComponent({
     list-style: none;
     position: absolute;
     width: fit-content;
-    max-height: 40vh;
+    max-height: 30vh;
     overflow: auto;
     white-space: nowrap;
     z-index: 1;

@@ -2,14 +2,17 @@ export const setEventPeriod = 'setEventPeriod';
 export const setItemsData = 'setItemsData';
 export const setCoinsData = 'setCoinsData';
 export const updatePunchKingScore = 'updatePunchKingScore';
-export const updateUnion = 'updateUnion';
+export const updateNeoCoreGain = 'updateNeoCoreGain';
+export const updateCoinBonus = 'updateCoinBonus';
 
 // Character Mutations
+export const setCharacterData = 'setCharacterData';
 export const updateCharacterNickname = 'updateCharacterNickname';
 export const addCharacterRow = 'addCharacterRow';
 export const removeCharacterRow = 'removeCharacterRow';
 
 // Items Cart Mutations
+export const setCartData = 'setCartData';
 export const updateCartItem = 'updateCartItem';
 export const updateCartCharacter = 'updateCartCharacter';
 export const updateBuyingQty = 'updateBuyingQty';

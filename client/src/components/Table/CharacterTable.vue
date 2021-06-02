@@ -14,7 +14,10 @@
                     />
                 </td>
                 <td>
-                    {{ row.expectedTotal }}
+                    {{ row.currentCoins }}
+                </td>
+                <td>
+                    {{ row.coinToCollect }}
                 </td>
                 <td>
                     {{ row.using }}

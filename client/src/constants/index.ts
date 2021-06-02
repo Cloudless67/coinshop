@@ -10,4 +10,4 @@ export const itemCartTableHeader = [
     '계',
 ];
 
-export const characterTableHeader = ['캐릭터', '모을 코인', '사용할 코인', '잉여'];
+export const characterTableHeader = ['캐릭터', '현재 코인', '모을 코인', '사용할 코인', '잉여'];

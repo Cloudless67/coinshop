@@ -8,11 +8,15 @@ export default {
     eventStart: DateTime.fromMillis(0),
     eventEnd: DateTime.fromMillis(0),
     coins: [] as Coin[],
-    punchKingName: '돌의 정령을 도와달람',
+    punchKingName: '펀치킹',
+    neoCoreName: '위시 코인',
+    coinBonusName: '유니온 가드닝',
 
     itemsList: [] as Item[],
-    punchKingScore: 0,
-    union: 0,
+
+    punchKingScore: 1500,
+    neoCoreQty: 400,
+    coinBonus: 0,
 
     characterData: new Table([['크림슨임프'], ['테이피르'], ['이심검']]),
     itemCartData: new Table([
