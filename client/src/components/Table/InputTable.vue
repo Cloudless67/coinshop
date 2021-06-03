@@ -13,23 +13,26 @@
             </tr>
             <tr>
                 <td>{{ $store.state.punchKingName }}</td>
-                <td>
-                    <input class="w-75" type="number" v-model="punchKingScore" min="0" max="1500" />
-                    점
+                <td class="coins">
+                    <NumberInput v-model="punchKingScore" :min="0" :max="1500" />
                 </td>
                 <td>총 {{ commaSeperatedNumber($store.state.punchKingScore * 8) }}점</td>
             </tr>
             <tr>
                 <td>{{ $store.state.neoCoreName }}</td>
-                <td>
-                    <input class="w-75" type="number" v-model="neoCoreQty" min="0" max="400" /> 개
+                <td class="coins">
+                    <NumberInput v-model="neoCoreQty" :min="0" :max="400" />
                 </td>
                 <td>총 {{ commaSeperatedNumber($store.state.neoCoreQty * 7) }}개</td>
             </tr>
             <tr>
                 <td>{{ $store.state.coinBonusName }}</td>
                 <td colspan="2">
-                    <input class="w-75" type="number" v-model="coinBonus" min="0" max="10000" /> 개
+                    <span class="me-2">하루</span>
+                    <div class="d-inline-block w-25">
+                        <NumberInput v-model="coinBonus" :min="0" :max="400" />
+                    </div>
+                    <span>개</span>
                 </td>
             </tr>
         </tbody>
@@ -37,12 +40,14 @@
 </template>
 
 <script lang="ts">
-import useUtilities from '@/composables/useUtilities';
-import { updateNeoCoreGain, updatePunchKingScore, updateCoinBonus } from '@/store/mutationTypes';
 import { defineComponent } from 'vue';
+import NumberInput from '@/components/NumberInput.vue';
+import { updateNeoCoreGain, updatePunchKingScore, updateCoinBonus } from '@/store/mutationTypes';
+import useUtilities from '@/composables/useUtilities';
 
 export default defineComponent({
     name: 'Input Table',
+    components: { NumberInput },
     setup() {
         return useUtilities();
     },
@@ -52,9 +57,7 @@ export default defineComponent({
                 return this.$store.state.punchKingScore;
             },
             set(value: number) {
-                value = Math.max(Math.min(1500, value), 0);
                 this.$store.commit(updatePunchKingScore, value);
-                this.$forceUpdate();
             },
         },
         neoCoreQty: {
@@ -62,9 +65,7 @@ export default defineComponent({
                 return this.$store.state.neoCoreQty;
             },
             set(value: number) {
-                value = Math.max(Math.min(400, value), 0);
                 this.$store.commit(updateNeoCoreGain, value);
-                this.$forceUpdate();
             },
         },
         coinBonus: {

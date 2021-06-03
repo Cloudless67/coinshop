@@ -24,7 +24,7 @@
                             :disabled="row.bought"
                         />
                     </td>
-                    <td class="price">
+                    <td class="coins">
                         {{ commaSeperatedNumber(row.item.price) }}
                     </td>
                     <td class="exchangable">
@@ -58,7 +58,7 @@
                             max="999"
                         />
                     </td>
-                    <td class="sum">
+                    <td class="coins">
                         {{ commaSeperatedNumber(row.sum) }}
                     </td>
                     <td
@@ -191,47 +191,3 @@ export default defineComponent({
     },
 });
 </script>
-
-<style lang="scss" scoped>
-.wrapper {
-    position: relative;
-    overflow: auto;
-    height: 80vh;
-}
-
-.item-cart-row {
-    user-select: none;
-
-    &:hover {
-        cursor: pointer;
-    }
-}
-
-.coin-name {
-    min-width: 8ch;
-    width: fit-content;
-}
-
-.item-name {
-    min-width: 16ch;
-}
-
-.exchangable,
-.qty,
-.price,
-.buying-qty {
-    min-width: 6ch;
-    text-align: center;
-}
-
-.per-character,
-.sum {
-    min-width: 7ch;
-    text-align: center;
-}
-
-.character {
-    min-width: 12ch;
-    width: 12ch;
-}
-</style>

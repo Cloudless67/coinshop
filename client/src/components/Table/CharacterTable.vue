@@ -3,7 +3,7 @@
         <TableHeader :headers="headers" />
         <tbody ref="tbody">
             <tr v-for="(row, i) in rows" :key="i">
-                <td style="width: 12ch;">
+                <td class="character">
                     <input
                         class="w-100"
                         type="text"
@@ -13,20 +13,19 @@
                         @input="updateNickname(i, $event.target.value)"
                     />
                 </td>
-                <td>
-                    <input
-                        style="width: 6ch;"
-                        :value="commaSeperatedNumber(row.currentCoins)"
-                        @input="updateCurrentCoins(i, $event.target.value)"
+                <td class="coins">
+                    <NumberInput
+                        :model-value="row.currentCoins"
+                        @update:model-value="updateCurrentCoins(i, $event)"
                     />
                 </td>
-                <td>
+                <td class="coins">
                     {{ commaSeperatedNumber(row.toCollect) }}
                 </td>
-                <td>
+                <td class="coins">
                     {{ commaSeperatedNumber(row.toUse) }}
                 </td>
-                <td :class="{ 'table-danger': surplus(row) < 0 }">
+                <td class="coins" :class="{ 'table-danger': surplus(row) < 0 }">
                     {{ commaSeperatedNumber(surplus(row)) }}
                 </td>
                 <td v-show="edit" class="btn table-danger" @click="removeRow(i)">X</td>
@@ -48,6 +47,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import TableHeader from '@/components/Table/TableHeader.vue';
+import NumberInput from '@/components/NumberInput.vue';
 import {
     addCharacterRow,
     removeCharacterRow,
@@ -68,7 +68,7 @@ type RowData = {
 
 export default defineComponent({
     name: 'Character Table',
-    components: { TableHeader },
+    components: { TableHeader, NumberInput },
     props: {
         edit: {
             type: Boolean,

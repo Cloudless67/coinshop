@@ -14,11 +14,11 @@
         </div>
     </div>
     <div class="row my-2">
-        <div class="col-xl-4" style="margin-top: 28px">
+        <div class="col-xxl-4 overflow-auto" style="margin-top: 28px">
             <InputTable />
             <CharacterTable :edit="edit" />
         </div>
-        <div class="col-xl-8">
+        <div class="col-xxl-8">
             <ItemCartTable :edit="edit" />
         </div>
     </div>

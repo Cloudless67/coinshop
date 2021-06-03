@@ -3,7 +3,7 @@ export const itemCartTableHeader = [
     '아이템',
     '가격',
     '창고\n이동',
-    '캐릭별\n구매',
+    '월드\n공유',
     '수량',
     '구매 캐릭터',
     '구매\n수량',
