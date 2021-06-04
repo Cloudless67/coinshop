@@ -61,11 +61,7 @@ export default {
     },
 
     [mutations.addCharacterRow](state: State, row: number) {
-        state.characterData.addRow(row, [
-            '',
-            0,
-            calculateCoinsToCollect(state.eventStart, state.eventEnd, state.coinBonus, row === 0),
-        ]);
+        state.characterData.addRow(row, ['', 0, calculateCoinsToCollect(state, row === 0)]);
     },
 
     [mutations.removeCharacterRow](state: State, row: number) {

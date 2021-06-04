@@ -10,6 +10,7 @@
                 <Main />
             </div>
         </div>
+        <div class="d-xxl-none front"></div>
     </div>
 </template>
 
@@ -67,7 +68,7 @@ body {
 }
 
 .front {
-    position: fixed;
+    position: absolute;
     background-image: url('/front.png');
     width: 100%;
     height: 50vh;

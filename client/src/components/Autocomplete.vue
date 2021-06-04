@@ -67,7 +67,6 @@ export default defineComponent({
             const wrapper = td.closest('section')!;
 
             down.value = showDirection(td, list.value!.closest('table')!, wrapper) === 'down';
-            console.log(down.value);
             if (down.value) {
                 setPositionBelow(list.value!, td);
                 scrollToTop(list.value!);
@@ -130,6 +129,7 @@ const setPositionAbove = (list: HTMLElement, td: HTMLElement, wrapper: HTMLEleme
 };
 
 const scrollToTop = (el: HTMLElement) => el.scrollTo(0, 0);
+
 const scrollToBottom = (el: HTMLElement) => el.scrollTo(0, el.scrollHeight);
 </script>
 

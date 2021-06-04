@@ -2,14 +2,17 @@
     <table class="table table-sm table-striped">
         <TableHeader :headers="headers" />
         <tbody ref="tbody">
-            <tr v-for="(row, i) in rows" :key="i">
+            <tr
+                v-for="(row, i) in rows"
+                :key="i"
+                @keydown.ctrl.enter="addRow(i)"
+                @keydown.ctrl.delete.prevent="removeRow(i)"
+            >
                 <td class="character">
                     <input
                         class="w-100"
                         type="text"
                         :value="row.nickname"
-                        @keydown.ctrl.enter="addRow(i)"
-                        @keydown.ctrl.delete.prevent="removeRow(i)"
                         @input="updateNickname(i, $event.target.value)"
                     />
                 </td>
@@ -58,7 +61,7 @@ import {
     updateCharacterCurrentCoins,
     updateCharacterNickname,
 } from '@/store/mutationTypes';
-import useTableRowController from '@/composables/useTableRowController';
+import useTableController from '@/composables/useTableController';
 import useCharacterRows from '@/composables/useCharacterRows';
 import useUtilities from '@/composables/useUtilities';
 import { characterTableHeader } from '@/constants';
@@ -80,7 +83,7 @@ export default defineComponent({
         },
     },
     setup() {
-        const { tbody, addRow, removeRow } = useTableRowController();
+        const { tbody, addRow, removeRow, updateCellValue } = useTableController();
 
         const rows = useCharacterRows();
 
@@ -94,18 +97,14 @@ export default defineComponent({
             removeRow: (row: number) => removeRow(removeCharacterRow, row, 0),
             surplus: (rowData: RowData) => rowData.currentCoins + rowData.toCollect - rowData.toUse,
             commaSeperatedNumber,
+
+            updateNickname: (row: number, value: string) =>
+                updateCellValue(updateCharacterNickname, row, value),
+            updateCurrentCoins: (row: number, value: string) =>
+                updateCellValue(updateCharacterCurrentCoins, row, value),
+            updateCoinsToCollect: (row: number, value: string) =>
+                updateCellValue(updateCharacterCoinsToCollect, row, value),
         };
-    },
-    methods: {
-        updateNickname(row: number, value: string) {
-            this.$store.commit(updateCharacterNickname, { row, value });
-        },
-        updateCurrentCoins(row: number, value: string) {
-            this.$store.commit(updateCharacterCurrentCoins, { row, value });
-        },
-        updateCoinsToCollect(row: number, value: string) {
-            this.$store.commit(updateCharacterCoinsToCollect, { row, value });
-        },
     },
 });
 </script>

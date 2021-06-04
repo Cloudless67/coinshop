@@ -24,5 +24,8 @@ export default function useTableRowController() {
         }
     };
 
-    return { tbody, addRow, removeRow };
+    const updateCellValue = (commit: string, row: number, value: string) =>
+        store.commit(commit, { row, value });
+
+    return { tbody, addRow, removeRow, updateCellValue };
 }

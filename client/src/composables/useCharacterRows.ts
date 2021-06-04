@@ -9,25 +9,15 @@ export default function useCharacterRows() {
 
     const rows = computed(() => {
         return store.state.characterData.table.map((row, i) => {
+            const maxToCollect = calculateCoinsToCollect(store.state, i === 0);
             return {
                 nickname: row[0] as string,
                 currentCoins: row[1] as number,
-                toCollect: coinsToCollect(row, i),
+                toCollect: Boolean(row[3]) ? (row[2] as number) : maxToCollect,
                 toUse: calculateCoinsToUse(row),
             };
         });
     });
-
-    function coinsToCollect(row: (string | number)[], i: number) {
-        return Boolean(row[3])
-            ? (row[2] as number)
-            : calculateCoinsToCollect(
-                  store.state.eventStart,
-                  store.state.eventEnd,
-                  store.state.coinBonus,
-                  i === 0,
-              );
-    }
 
     function calculateCoinsToUse(row: (string | number)[]) {
         return store.state.itemCartData.table

@@ -12,6 +12,7 @@
         <div class="btn btn-sm btn-outline-dark ms-2" @click="save">
             저장
         </div>
+        <Info :info="basicHelp" />
     </div>
     <div class="row my-2">
         <div class="col-xxl-4 overflow-auto" style="margin-top: 28px">
@@ -40,11 +41,13 @@ import { computed, defineComponent, ref } from 'vue';
 import InputTable from './Table/InputTable.vue';
 import CharacterTable from './Table/CharacterTable.vue';
 import ItemCartTable from './Table/ItemCartTable.vue';
+import Info from './Info.vue';
 import useLocalStorage from '@/composables/useLocalStorage';
+import { basicHelp } from '@/constants';
 
 export default defineComponent({
     name: 'Main',
-    components: { InputTable, CharacterTable, ItemCartTable },
+    components: { InputTable, CharacterTable, ItemCartTable, Info },
     setup() {
         const { save } = useLocalStorage();
 
@@ -60,6 +63,7 @@ export default defineComponent({
             autoUpdate,
             save: () => save(),
             edit: ref(false),
+            basicHelp,
         };
     },
 });
@@ -69,6 +73,6 @@ export default defineComponent({
 .btn-edit {
     position: absolute;
     left: 1rem;
-    z-index: 20;
+    z-index: 1;
 }
 </style>

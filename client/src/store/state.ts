@@ -1,4 +1,4 @@
-import Table from '@/table/Table';
+import Table from '@/Table';
 import Item from '@/Item';
 import { DateTime } from 'luxon';
 import Coin from '@/Coin';

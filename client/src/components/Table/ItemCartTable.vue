@@ -13,7 +13,7 @@
                     @dblclick.prevent="toggleBuy(i)"
                 >
                     <td class="coin-name">
-                        {{ coinName(row.item.coin) }}
+                        {{ $store.getters.getCoinByID(row.item.coin)?.name }}
                     </td>
                     <td class="item-name">
                         <Autocomplete
@@ -79,13 +79,15 @@
                         <span class="w-100">추가</span>
                     </td>
                 </tr>
-                <tr class="text-center" v-for="(coin, i) in $store.state.coins" :key="i">
+            </tbody>
+            <tfoot>
+                <tr class="text-center bg-light" v-for="(coin, i) in $store.state.coins" :key="i">
                     <td colspan="8">{{ coin.name }}</td>
                     <td>
                         {{ commaSeperatedNumber(totalSum(i)) }}
                     </td>
                 </tr>
-            </tbody>
+            </tfoot>
         </table>
     </section>
 </template>
@@ -103,7 +105,7 @@ import {
     updateCartItem,
     updateCharacterCurrentCoins,
 } from '@/store/mutationTypes';
-import useTableRowController from '@/composables/useTableRowController';
+import useTableController from '@/composables/useTableController';
 import useItemCartRows from '@/composables/useItemCartRows';
 import useUtilities from '@/composables/useUtilities';
 import Item from '@/Item';
@@ -119,7 +121,7 @@ export default defineComponent({
         },
     },
     setup() {
-        const { tbody, addRow, removeRow } = useTableRowController();
+        const { tbody, addRow, removeRow, updateCellValue } = useTableController();
 
         const rows = useItemCartRows();
 
@@ -132,6 +134,9 @@ export default defineComponent({
             addRow: (row: number, col = 1) => addRow(addCartItem, row, col),
             removeRow: (row: number, col: number = 1) => removeRow(removeCartItem, row, col),
             commaSeperatedNumber,
+
+            updateCharacter: (row: number, value: string) =>
+                updateCellValue(updateCartCharacter, row, value),
         };
     },
     methods: {
@@ -143,9 +148,6 @@ export default defineComponent({
                     value: this.itemsLeft(this.rows[row].item, row),
                 });
             });
-        },
-        updateCharacter(row: number, value: string) {
-            this.$store.commit(updateCartCharacter, { row, value });
         },
         updateBuyingQty(row: number, value: number) {
             value = Math.min(this.itemsLeft(this.rows[row].item, row), value);
@@ -164,10 +166,6 @@ export default defineComponent({
         },
         showCharacterInput(item: Item) {
             return item.coin >= 0 && !this.$store.getters.getCoinByID(item.coin).worldScope;
-        },
-        coinName(coinID: number) {
-            if (coinID >= 0) return this.$store.getters.getCoinByID(coinID).name;
-            else return '';
         },
         totalSum(coin: number) {
             return this.rows.filter(r => r.item.coin === coin).reduce((a, r) => a + r.sum, 0);
