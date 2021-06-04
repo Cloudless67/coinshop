@@ -17,6 +17,17 @@
         <div class="col-xxl-4 overflow-auto" style="margin-top: 28px">
             <InputTable />
             <CharacterTable :edit="edit" />
+            <div class="form-check">
+                <input
+                    class="form-check-input"
+                    id="flexCheckChecked"
+                    type="checkbox"
+                    v-model="autoUpdate"
+                />
+                <label class="form-check-label" for="flexCheckChecked">
+                    자동 업데이트
+                </label>
+            </div>
         </div>
         <div class="col-xxl-8">
             <ItemCartTable :edit="edit" />
@@ -25,31 +36,31 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import InputTable from './Table/InputTable.vue';
 import CharacterTable from './Table/CharacterTable.vue';
 import ItemCartTable from './Table/ItemCartTable.vue';
+import useLocalStorage from '@/composables/useLocalStorage';
 
 export default defineComponent({
     name: 'Main',
     components: { InputTable, CharacterTable, ItemCartTable },
-    data() {
-        return { edit: false };
-    },
-    methods: {
-        save() {
-            localStorage.setItem('punchking', this.$store.state.punchKingScore.toString());
-            localStorage.setItem('neocore', this.$store.state.neoCoreQty.toString());
-            localStorage.setItem('coin-bonus', this.$store.state.coinBonus.toString());
-            localStorage.setItem(
-                'characters',
-                JSON.stringify(this.$store.state.characterData.table),
-            );
-            localStorage.setItem('items', JSON.stringify(this.$store.state.itemCartData.table));
-        },
-        reset() {
-            localStorage.clear();
-        },
+    setup() {
+        const { save } = useLocalStorage();
+
+        const autoUpdate = computed({
+            get: () => localStorage.getItem('autoupdate') === 'true',
+            set: value => {
+                localStorage.setItem('autoupdate', value.toString());
+                if (value) save();
+            },
+        });
+
+        return {
+            autoUpdate,
+            save: () => save(),
+            edit: ref(false),
+        };
     },
 });
 </script>

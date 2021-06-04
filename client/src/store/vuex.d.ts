@@ -21,6 +21,8 @@ declare module '@vue/runtime-core' {
         neoCoreQty: number;
         coinBonus: number;
 
+        autoUpdateCoins: boolean;
+
         characterData: Table;
         itemCartData: Table;
     }

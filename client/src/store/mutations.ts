@@ -1,11 +1,15 @@
 import Coin from '@/Coin';
+import calculateCoinsToCollect from '@/coinsToCollect';
 import Item from '@/Item';
-import { EventDuration } from '@/types';
+import { DateTime } from 'luxon';
 import { State } from 'vue';
 import * as mutations from './mutationTypes';
 
 export default {
-    [mutations.setEventPeriod](state: State, { eventStart, eventEnd }: EventDuration) {
+    [mutations.setEventPeriod](
+        state: State,
+        { eventStart, eventEnd }: { eventStart: DateTime; eventEnd: DateTime },
+    ) {
         state.eventStart = eventStart;
         state.eventEnd = eventEnd;
     },
@@ -48,8 +52,20 @@ export default {
         state.characterData.table[row][1] = value;
     },
 
+    [mutations.updateCharacterCoinsToCollect](
+        state: State,
+        { row, value }: { row: number; value: number },
+    ) {
+        state.characterData.table[row][2] = value;
+        state.characterData.table[row][3] = 'true';
+    },
+
     [mutations.addCharacterRow](state: State, row: number) {
-        state.characterData.addRow(row, ['', 0]);
+        state.characterData.addRow(row, [
+            '',
+            0,
+            calculateCoinsToCollect(state.eventStart, state.eventEnd, state.coinBonus, row === 0),
+        ]);
     },
 
     [mutations.removeCharacterRow](state: State, row: number) {

@@ -14,52 +14,33 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import { DateTime } from 'luxon';
+import { defineComponent, onBeforeMount, ref } from 'vue';
 import Main from '@/components/Main.vue';
-import {
-    setCartData,
-    setCharacterData,
-    setCoinsData,
-    setEventPeriod,
-    setItemsData,
-    updateCoinBonus,
-    updateNeoCoreGain,
-    updatePunchKingScore,
-} from './store/mutationTypes';
-import Item from './Item';
-import Coin from './Coin';
+import useFetchEventData from '@/composables/useFetchEventData';
+import useLocalStorage from '@/composables/useLocalStorage';
+import useAutoupdateCoins from '@/composables/useAutoupdateCoins';
 
 export default defineComponent({
     name: 'App',
     components: { Main },
-    data() {
-        return { eventName: '' };
+    setup() {
+        const eventName = ref('');
+
+        onBeforeMount(useFetchEventData(eventName));
+
+        const { save, load } = useLocalStorage();
+        load();
+
+        const { autoUpdate } = useAutoupdateCoins();
+
+        return { eventName, autoUpdate, save };
     },
-    async created() {
-        const eventInfo = await fetch('/api').then(res => res.json());
-        this.eventName = eventInfo.name;
-        this.$store.commit(setEventPeriod, {
-            eventStart: DateTime.fromISO(eventInfo.startDate),
-            eventEnd: DateTime.fromISO(eventInfo.endDate),
-        });
-
-        const coins: Coin[] = await fetch('/api/coins').then(res => res.json());
-        this.$store.commit(setCoinsData, coins);
-
-        const items: Item[] = await fetch('/api/items').then(res => res.json());
-        this.$store.commit(setItemsData, items);
-
-        if (localStorage.getItem('punchking'))
-            this.$store.commit(updatePunchKingScore, Number(localStorage.getItem('punchking')));
-        if (localStorage.getItem('neocore'))
-            this.$store.commit(updateNeoCoreGain, Number(localStorage.getItem('neocore')));
-        if (localStorage.getItem('coin-bonus'))
-            this.$store.commit(updateCoinBonus, Number(localStorage.getItem('coin-bonus')));
-        if (localStorage.getItem('characters'))
-            this.$store.commit(setCharacterData, JSON.parse(localStorage.getItem('characters')!));
-        if (localStorage.getItem('items'))
-            this.$store.commit(setCartData, JSON.parse(localStorage.getItem('items')!));
+    watch: {
+        eventName() {
+            if (!this.eventName) return;
+            this.autoUpdate();
+            if (localStorage.getItem('autoupdate') === 'true') this.save();
+        },
     },
 });
 </script>

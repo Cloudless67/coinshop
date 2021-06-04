@@ -9,6 +9,7 @@ export const updateCoinBonus = 'updateCoinBonus';
 export const setCharacterData = 'setCharacterData';
 export const updateCharacterNickname = 'updateCharacterNickname';
 export const updateCharacterCurrentCoins = 'updateCharacterCurrentCoins';
+export const updateCharacterCoinsToCollect = 'updateCharacterCoinsToCollect';
 export const addCharacterRow = 'addCharacterRow';
 export const removeCharacterRow = 'removeCharacterRow';
 

@@ -18,10 +18,10 @@ export default {
     neoCoreQty: 400,
     coinBonus: 0,
 
+    autoUpdateCoins: true,
     characterData: new Table([
-        ['크림슨임프', 0],
-        ['테이피르', 0],
-        ['이심검', 0],
+        ['본캐', 0, 25344, 0],
+        ['부캐', 0, 19200, 0],
     ]),
     itemCartData: new Table([
         ['', '', 0, 0],

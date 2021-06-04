@@ -2,7 +2,7 @@ import { computed } from 'vue';
 import { useStore } from 'vuex';
 import { key } from '@/store';
 import Item from '@/Item';
-import { DateTime, Interval } from 'luxon';
+import calculateCoinsToCollect from '@/coinsToCollect';
 
 export default function useCharacterRows() {
     const store = useStore(key);
@@ -12,28 +12,21 @@ export default function useCharacterRows() {
             return {
                 nickname: row[0] as string,
                 currentCoins: row[1] as number,
-                toCollect: calculateCoinsToCollect(i === 0),
+                toCollect: coinsToCollect(row, i),
                 toUse: calculateCoinsToUse(row),
             };
         });
     });
 
-    const today = () => DateTime.now().set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
-    const dayDiff = (start: DateTime, end: DateTime) =>
-        Interval.fromDateTimes(start, end).count('day');
-
-    function calculateCoinsToCollect(isMainCharacter: boolean) {
-        if (store.state.eventEnd.toMillis() === 0) return 0;
-
-        const daysLeft = Math.min(
-            dayDiff(today(), store.state.eventEnd),
-            store.getters.eventDuration,
-        );
-        const sundays = Math.floor((daysLeft + 3) / 7);
-        const base = daysLeft * 300 + sundays * 300;
-
-        if (isMainCharacter) return base + store.state.coinBonus * daysLeft;
-        else return base;
+    function coinsToCollect(row: (string | number)[], i: number) {
+        return Boolean(row[3])
+            ? (row[2] as number)
+            : calculateCoinsToCollect(
+                  store.state.eventStart,
+                  store.state.eventEnd,
+                  store.state.coinBonus,
+                  i === 0,
+              );
     }
 
     function calculateCoinsToUse(row: (string | number)[]) {

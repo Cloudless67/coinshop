@@ -20,7 +20,10 @@
                     />
                 </td>
                 <td class="coins">
-                    {{ commaSeperatedNumber(row.toCollect) }}
+                    <NumberInput
+                        :model-value="row.toCollect"
+                        @update:model-value="updateCoinsToCollect(i, $event)"
+                    />
                 </td>
                 <td class="coins">
                     {{ commaSeperatedNumber(row.toUse) }}
@@ -51,6 +54,7 @@ import NumberInput from '@/components/NumberInput.vue';
 import {
     addCharacterRow,
     removeCharacterRow,
+    updateCharacterCoinsToCollect,
     updateCharacterCurrentCoins,
     updateCharacterNickname,
 } from '@/store/mutationTypes';
@@ -97,9 +101,10 @@ export default defineComponent({
             this.$store.commit(updateCharacterNickname, { row, value });
         },
         updateCurrentCoins(row: number, value: string) {
-            const num = Math.max(0, Number.parseInt(value.replaceAll(',', '')));
-            this.$store.commit(updateCharacterCurrentCoins, { row, value: num || 0 });
-            this.$forceUpdate();
+            this.$store.commit(updateCharacterCurrentCoins, { row, value });
+        },
+        updateCoinsToCollect(row: number, value: string) {
+            this.$store.commit(updateCharacterCoinsToCollect, { row, value });
         },
     },
 });
