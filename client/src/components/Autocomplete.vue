@@ -13,7 +13,7 @@
             @blur="active = false"
             @keydown.esc="active = false"
         />
-        <ul v-show="active" class="list-group shadow" ref="list">
+        <ul v-show="active" class="list-group shadow position-absolute" ref="list">
             <li
                 class="list-group-item"
                 v-for="(cand, i) in candidates"
@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { computed, defineComponent, nextTick, PropType, ref, toRefs, watch } from 'vue';
 
 export default defineComponent({
     name: 'Autocomplete Input',
@@ -47,13 +47,44 @@ export default defineComponent({
         disabled: { type: Boolean, default: false },
         width: String,
     },
-    data() {
-        return { active: false, focus: -1 };
-    },
-    computed: {
-        candidates(): string[] {
-            return this.itemsList.filter(x => x.includes(this.value));
-        },
+    setup(props) {
+        const { value, itemsList } = toRefs(props);
+
+        const active = ref(false);
+        const focus = ref(-1);
+        const down = ref(false);
+        const list = ref<HTMLElement>();
+
+        const candidates = computed(() => {
+            if (down.value) return itemsList.value.filter(x => x.includes(value.value));
+            else return itemsList.value.filter(x => x.includes(value.value)).reverse();
+        });
+
+        watch(active, async cur => {
+            if (!cur) return;
+            await nextTick();
+            const td = list.value!.closest('td')!;
+            const wrapper = td.closest('section')!;
+
+            down.value = showDirection(td, list.value!.closest('table')!) === 'down';
+            if (down.value) {
+                setPositionBelow(list.value!, td);
+                scrollToTop(list.value!);
+                focus.value = -1;
+            } else {
+                setPositionAbove(list.value!, td, wrapper);
+                scrollToBottom(list.value!);
+                focus.value = candidates.value.length;
+            }
+        });
+
+        return {
+            active,
+            focus,
+            down,
+            list,
+            candidates,
+        };
     },
     methods: {
         updateInput(value: string) {
@@ -65,26 +96,38 @@ export default defineComponent({
             this.$emit('update', cand);
         },
         handleDown() {
-            this.active = true;
-            this.focus = Math.min(this.focus + 1, this.candidates.length - 1);
-            this.scrollView(false);
+            if (this.down) this.active = true;
+            this.focus = Math.min(this.focus + 1, this.candidates.length - (this.down ? 1 : 0));
+            if (this.focus < this.candidates.length) this.scrollView();
+            else this.active = false;
         },
         handleUp() {
-            this.focus = Math.max(this.focus - 1, -1);
-            this.active = this.focus !== -1;
-            this.scrollView(true);
+            if (!this.down) this.active = true;
+            this.focus = Math.max(this.focus - 1, this.down ? -1 : 0);
+            if (this.focus < 0) this.active = false;
+            else this.scrollView();
         },
         handleEnter() {
-            if (this.active && this.focus >= 0) this.select(this.candidates[this.focus]);
+            if (this.active && this.focus >= 0 && this.focus < this.candidates.length)
+                this.select(this.candidates[this.focus]);
         },
-        scrollView(up: boolean) {
-            if (this.focus >= 0) {
-                const list = this.$refs.list as HTMLUListElement;
-                list.children[this.focus].scrollIntoView(up);
-            }
+        scrollView() {
+            this.list!.children[this.focus].scrollIntoView({ block: 'nearest' });
         },
     },
 });
+
+const showDirection = (td: HTMLElement, table: HTMLElement) =>
+    td.offsetTop + td.offsetHeight + 200 <= table.offsetHeight ? 'down' : 'up';
+
+const setPositionBelow = (list: HTMLElement, td: HTMLElement) =>
+    (list.style.top = `${td.offsetTop + td.offsetHeight}px`);
+
+const setPositionAbove = (list: HTMLElement, td: HTMLElement, wrapper: HTMLElement) =>
+    (list.style.bottom = `${wrapper.offsetHeight - td.offsetTop}px`);
+
+const scrollToTop = (el: HTMLElement) => el.scrollTo(0, 0);
+const scrollToBottom = (el: HTMLElement) => el.scrollTo(0, el.scrollHeight);
 </script>
 
 <style lang="scss" scoped>
@@ -92,7 +135,7 @@ export default defineComponent({
     list-style: none;
     position: absolute;
     width: fit-content;
-    max-height: 30vh;
+    max-height: 200px;
     overflow: auto;
     white-space: nowrap;
     z-index: 1;

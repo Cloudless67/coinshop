@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper">
+    <section class="wrapper">
         <table class="table table-sm table-striped">
             <TableHeader :headers="headers" />
             <tbody ref="tbody">
@@ -19,7 +19,7 @@
                         <Autocomplete
                             :value="row.item.name"
                             :itemsList="$store.getters.itemsNameList"
-                            :width="'16ch'"
+                            :width="'100%'"
                             @update="updateItem(i, $event)"
                             :disabled="row.bought"
                         />
@@ -87,7 +87,7 @@
                 </tr>
             </tbody>
         </table>
-    </div>
+    </section>
 </template>
 
 <script lang="ts">

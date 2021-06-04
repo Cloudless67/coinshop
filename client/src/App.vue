@@ -51,11 +51,11 @@ export default defineComponent({
         this.$store.commit(setItemsData, items);
 
         if (localStorage.getItem('punchking'))
-            this.$store.commit(updatePunchKingScore, localStorage.getItem('punchking'));
+            this.$store.commit(updatePunchKingScore, Number(localStorage.getItem('punchking')));
         if (localStorage.getItem('neocore'))
-            this.$store.commit(updateNeoCoreGain, localStorage.getItem('neocore'));
+            this.$store.commit(updateNeoCoreGain, Number(localStorage.getItem('neocore')));
         if (localStorage.getItem('coin-bonus'))
-            this.$store.commit(updateCoinBonus, localStorage.getItem('coin-bonus'));
+            this.$store.commit(updateCoinBonus, Number(localStorage.getItem('coin-bonus')));
         if (localStorage.getItem('characters'))
             this.$store.commit(setCharacterData, JSON.parse(localStorage.getItem('characters')!));
         if (localStorage.getItem('items'))
