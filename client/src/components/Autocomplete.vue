@@ -66,7 +66,8 @@ export default defineComponent({
             const td = list.value!.closest('td')!;
             const wrapper = td.closest('section')!;
 
-            down.value = showDirection(td, list.value!.closest('table')!) === 'down';
+            down.value = showDirection(td, list.value!.closest('table')!, wrapper) === 'down';
+            console.log(down.value);
             if (down.value) {
                 setPositionBelow(list.value!, td);
                 scrollToTop(list.value!);
@@ -78,13 +79,7 @@ export default defineComponent({
             }
         });
 
-        return {
-            active,
-            focus,
-            down,
-            list,
-            candidates,
-        };
+        return { active, focus, down, list, candidates };
     },
     methods: {
         updateInput(value: string) {
@@ -117,14 +112,22 @@ export default defineComponent({
     },
 });
 
-const showDirection = (td: HTMLElement, table: HTMLElement) =>
-    td.offsetTop + td.offsetHeight + 200 <= table.offsetHeight ? 'down' : 'up';
+const showDirection = (td: HTMLElement, table: HTMLElement, wrapper: HTMLElement) => {
+    return td.offsetTop + td.offsetHeight + 200 <= table.offsetHeight ||
+        td.offsetTop + td.offsetHeight + 200 <= wrapper.offsetHeight
+        ? 'down'
+        : 'up';
+};
 
-const setPositionBelow = (list: HTMLElement, td: HTMLElement) =>
-    (list.style.top = `${td.offsetTop + td.offsetHeight}px`);
+const setPositionBelow = (list: HTMLElement, td: HTMLElement) => {
+    list.style.top = `${td.offsetTop + td.offsetHeight}px`;
+    list.style.bottom = '';
+};
 
-const setPositionAbove = (list: HTMLElement, td: HTMLElement, wrapper: HTMLElement) =>
-    (list.style.bottom = `${wrapper.offsetHeight - td.offsetTop}px`);
+const setPositionAbove = (list: HTMLElement, td: HTMLElement, wrapper: HTMLElement) => {
+    list.style.bottom = `${wrapper.offsetHeight - td.offsetTop}px`;
+    list.style.top = '';
+};
 
 const scrollToTop = (el: HTMLElement) => el.scrollTo(0, 0);
 const scrollToBottom = (el: HTMLElement) => el.scrollTo(0, el.scrollHeight);
