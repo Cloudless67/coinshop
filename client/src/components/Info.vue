@@ -3,7 +3,9 @@
         <div class="info-icon" @mouseover="active = true" @mouseleave="active = false">
             ?
         </div>
-        <p class="info-box" v-show="active" v-html="info"></p>
+        <transition name="grow-down">
+            <p class="info-box" v-show="active" v-html="info"></p>
+        </transition>
     </div>
 </template>
 
@@ -29,6 +31,8 @@ export default defineComponent({
     height: 1.5rem;
     color: white;
     text-align: center;
+    cursor: pointer;
+    user-select: none;
 }
 
 .info-box {
@@ -38,7 +42,18 @@ export default defineComponent({
     line-height: 2rem;
     background: rgba(0, 0, 0, 0.7);
     color: white;
-    padding: 8px;
     border-radius: 4px;
+    padding: 8px;
+    user-select: none;
+}
+
+.grow-down-enter-active,
+.grow-down-leave-active {
+    transition: opacity 0.2s ease;
+}
+
+.grow-down-enter-from,
+.grow-down-leave-to {
+    opacity: 0;
 }
 </style>

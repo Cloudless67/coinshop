@@ -189,3 +189,35 @@ export default defineComponent({
     },
 });
 </script>
+
+<style lang="scss" scoped>
+.wrapper {
+    position: relative;
+    overflow: auto;
+    min-height: 80vh;
+    max-height: 80vh;
+}
+
+.item-cart-row {
+    user-select: none;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.coin-name {
+    min-width: 8ch;
+    width: fit-content;
+}
+
+.item-name {
+    min-width: 16ch;
+}
+
+.exchangable,
+.per-character {
+    min-width: 4ch;
+    text-align: center;
+}
+</style>

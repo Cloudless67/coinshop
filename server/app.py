@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='./app', static_url_path="/app")
 
 
 @app.route("/api")
@@ -50,3 +50,9 @@ def coinshop_items_data():
                   for line in f.readlines()])
     f.close()
     return res
+
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    return app.send_static_file("index.html")

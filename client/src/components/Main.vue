@@ -28,6 +28,7 @@
                 <label class="form-check-label" for="flexCheckChecked">
                     자동 업데이트
                 </label>
+                <Info :info="autoUpdateInfo" />
             </div>
         </div>
         <div class="col-xxl-8">
@@ -43,7 +44,7 @@ import CharacterTable from './Table/CharacterTable.vue';
 import ItemCartTable from './Table/ItemCartTable.vue';
 import Info from './Info.vue';
 import useLocalStorage from '@/composables/useLocalStorage';
-import { basicHelp } from '@/constants';
+import { basicHelp, autoUpdateInfo } from '@/constants';
 
 export default defineComponent({
     name: 'Main',
@@ -64,6 +65,7 @@ export default defineComponent({
             save: () => save(),
             edit: ref(false),
             basicHelp,
+            autoUpdateInfo,
         };
     },
 });
