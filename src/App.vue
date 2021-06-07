@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="navbar justify-content-center">
+        <div class="text-center my-2">
             <h3>
                 <b>{{ eventName }} 코인샵</b>
             </h3>
