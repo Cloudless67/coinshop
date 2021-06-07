@@ -1,12 +1,16 @@
 @font-face {
     font-family: 'Maplestory';
-    src: url('assets/fonts/Maplestory Light.ttf');
+    src: url('assets/fonts/Maplestory Light.woff2') format('woff2'),
+        url('assets/fonts/Maplestory Light.ttf') format('truetype');
+    font-display: fallback;
     font-weight: normal;
 }
 
 @font-face {
     font-family: 'Maplestory';
-    src: url('assets/fonts/Maplestory Bold.ttf');
+    src: url('assets/fonts/Maplestory Bold.woff2') format('woff2'),
+        url('assets/fonts/Maplestory Bold.ttf') format('truetype');
+    font-display: fallback;
     font-weight: bold;
 }
 

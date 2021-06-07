@@ -51,7 +51,7 @@ export default defineComponent({
 body {
     position: relative;
     width: 100%;
-    background-image: url('assets/back.jpg');
+    background-image: url('assets/back.webp');
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -69,7 +69,7 @@ body {
 
 .front {
     position: absolute;
-    background-image: url('assets/front.png');
+    background-image: url('assets/front.webp');
     width: 100%;
     height: 50vh;
     bottom: 0;
