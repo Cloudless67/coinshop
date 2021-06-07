@@ -9,7 +9,7 @@
             @keydown.up="handleUp"
             @keydown.enter.exact="handleEnter"
             @input="updateInput($event.target.value)"
-            @focus="updateInput($event.target.value)"
+            @focus="active = true"
             @blur="active = false"
             @keydown.esc="active = false"
         />
