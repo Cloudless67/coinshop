@@ -108,7 +108,7 @@ import {
 import useTableController from '@/composables/useTableController';
 import useItemCartRows from '@/composables/useItemCartRows';
 import useUtilities from '@/composables/useUtilities';
-import Item from '@/Item';
+import Item from '@/lib/Item';
 import { itemCartTableHeader } from '@/constants';
 
 export default defineComponent({

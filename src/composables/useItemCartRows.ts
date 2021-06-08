@@ -1,7 +1,7 @@
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import { key } from '@/store';
-import Item from '@/Item';
+import Item from '@/lib/Item';
 
 export default function useTableRowController() {
     const store = useStore(key);

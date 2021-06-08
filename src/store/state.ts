@@ -1,12 +1,12 @@
-import Table from '@/Table';
-import Item from '@/Item';
-import { DateTime } from 'luxon';
-import Coin from '@/Coin';
+import Table from '@/lib/Table';
+import Item from '@/lib/Item';
+import Coin from '@/lib/Coin';
+import dayjs from 'dayjs';
 
 export default {
     eventName: '18th',
-    eventStart: DateTime.fromMillis(0),
-    eventEnd: DateTime.fromMillis(0),
+    eventStart: dayjs(),
+    eventEnd: dayjs(),
     coins: [] as Coin[],
     punchKingName: '펀치킹',
     neoCoreName: '위시 코인',

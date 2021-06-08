@@ -2,14 +2,14 @@ import { useStore } from 'vuex';
 import { key } from '@/store';
 import { DateTime, Interval } from 'luxon';
 import { setCharacterData } from '@/store/mutationTypes';
+import dayjs from 'dayjs';
 
 export default function useAutoupdateCoins() {
     const store = useStore(key);
 
     const isEventPeriod = () => {
-        return Interval.fromDateTimes(store.state.eventStart, store.state.eventEnd).contains(
-            DateTime.now(),
-        );
+        const today = dayjs();
+        return store.state.eventEnd.diff(today) > 0 && store.state.eventStart.diff(today) < 0;
     };
 
     const sundaysInInterval = (interval: Interval) =>

@@ -1,15 +1,15 @@
 import { ComponentCustomProperties } from 'vue';
 import { Store } from 'vuex';
-import { DateTime } from 'luxon';
-import Table from '@/Table';
-import Coin from '@/Coin';
+import { Dayjs } from 'dayjs';
+import Table from '@/lib/Table';
+import Coin from '@/lib/Coin';
 
 declare module '@vue/runtime-core' {
     // declare your own store states
     interface State {
         eventName: string;
-        eventStart: DateTime;
-        eventEnd: DateTime;
+        eventStart: Dayjs;
+        eventEnd: Dayjs;
         coins: Coin[];
         punchKingName: string;
         neoCoreName: string;

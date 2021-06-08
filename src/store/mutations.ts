@@ -1,14 +1,14 @@
-import Coin from '@/Coin';
-import calculateCoinsToCollect from '@/coinsToCollect';
-import Item from '@/Item';
-import { DateTime } from 'luxon';
+import Coin from '@/lib/Coin';
+import Item from '@/lib/Item';
+import calculateCoinsToCollect from '@/lib/coinsToCollect';
+import { Dayjs } from 'dayjs';
 import { State } from 'vue';
 import * as mutations from './mutationTypes';
 
 export default {
     [mutations.setEventPeriod](
         state: State,
-        { eventStart, eventEnd }: { eventStart: DateTime; eventEnd: DateTime },
+        { eventStart, eventEnd }: { eventStart: Dayjs; eventEnd: Dayjs },
     ) {
         state.eventStart = eventStart;
         state.eventEnd = eventEnd;

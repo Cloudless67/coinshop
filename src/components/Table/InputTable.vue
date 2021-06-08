@@ -7,8 +7,8 @@
                     이벤트 기간
                 </td>
                 <td colspan="2">
-                    {{ $store.state.eventStart.toLocaleString() }} ~
-                    {{ $store.state.eventEnd.toLocaleString() }}
+                    {{ $store.state.eventStart.format('YYYY년 MM월 DD일') }} -
+                    {{ $store.state.eventEnd.format('YYYY년 MM월 DD일') }}
                 </td>
             </tr>
             <tr>

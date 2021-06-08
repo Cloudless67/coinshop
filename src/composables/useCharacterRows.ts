@@ -1,8 +1,8 @@
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import { key } from '@/store';
-import Item from '@/Item';
-import calculateCoinsToCollect from '@/coinsToCollect';
+import Item from '@/lib/Item';
+import calculateCoinsToCollect from '@/lib/coinsToCollect';
 
 export default function useCharacterRows() {
     const store = useStore(key);

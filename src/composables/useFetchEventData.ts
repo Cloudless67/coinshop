@@ -2,12 +2,12 @@ import { Store, useStore } from 'vuex';
 import { key } from '@/store';
 import { Ref, State } from 'vue';
 import { setCoinsData, setEventPeriod, setItemsData } from '@/store/mutationTypes';
-import { DateTime } from 'luxon';
-import Coin from '@/Coin';
-import Item from '@/Item';
+import Coin from '@/lib/Coin';
+import Item from '@/lib/Item';
 import EventData from 'raw-loader!@/assets/EventData.csv';
 import ItemsData from 'raw-loader!@/assets/ItemsData.csv';
 import CoinsData from 'raw-loader!@/assets/CoinsData.csv';
+import dayjs from 'dayjs';
 
 export default function useLoadEventData(eventName: Ref<string>) {
     const parseCSV = (csv: string) =>
@@ -24,6 +24,8 @@ export default function useLoadEventData(eventName: Ref<string>) {
         loadCoinsData(store);
 
         loadItemsData(store);
+
+        console.log(JSON.stringify(store.state));
     };
 
     function loadItemsData(store: Store<State>) {
@@ -54,8 +56,8 @@ export default function useLoadEventData(eventName: Ref<string>) {
         const [startDate, endDate] = dateTimes.split(',');
         eventName.value = name;
         store.commit(setEventPeriod, {
-            eventStart: DateTime.fromISO(startDate),
-            eventEnd: DateTime.fromISO(endDate),
+            eventStart: dayjs(startDate),
+            eventEnd: dayjs(endDate),
         });
     }
 }
