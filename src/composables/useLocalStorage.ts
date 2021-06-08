@@ -1,6 +1,5 @@
 import { useStore } from 'vuex';
 import { key } from '@/store';
-import { DateTime } from 'luxon';
 import {
     setCartData,
     setCharacterData,
@@ -8,12 +7,18 @@ import {
     updateNeoCoreGain,
     updatePunchKingScore,
 } from '@/store/mutationTypes';
+import dayjs from 'dayjs';
 
 export default function useLocalStorage() {
     const store = useStore(key);
 
     const save = () => {
-        localStorage.setItem('last-visited', DateTime.now().toISODate());
+        localStorage.setItem(
+            'last-visited',
+            dayjs()
+                .startOf('date')
+                .format('YYYY-MM-DD'),
+        );
         localStorage.setItem('punchking', store.state.punchKingScore.toString());
         localStorage.setItem('neocore', store.state.neoCoreQty.toString());
         localStorage.setItem('coin-bonus', store.state.coinBonus.toString());

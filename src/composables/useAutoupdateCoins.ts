@@ -1,22 +1,18 @@
 import { useStore } from 'vuex';
 import { key } from '@/store';
-import { DateTime, Interval } from 'luxon';
 import { setCharacterData } from '@/store/mutationTypes';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
+import { dayDiff, sundaysInInterval } from '@/lib/utilities';
 
 export default function useAutoupdateCoins() {
     const store = useStore(key);
 
     const isEventPeriod = () => {
-        const today = dayjs();
+        const today = dayjs().startOf('date');
         return store.state.eventEnd.diff(today) > 0 && store.state.eventStart.diff(today) < 0;
     };
 
-    const sundaysInInterval = (interval: Interval) =>
-        Math.floor((interval.start.weekday + interval.count('day') - 1) / 7);
-
-    const isSameDay = (day1: DateTime, day2: DateTime) =>
-        day1.day === day2.day && day1.month === day2.month;
+    const isSameDay = (day1: Dayjs, day2: Dayjs) => day1.startOf('date') === day2.startOf('date');
 
     const coinsCollectedFor = (days: number, sundays: number, isMainCharacter: boolean) => {
         if (isMainCharacter) return (days + sundays) * (300 + store.state.coinBonus);
@@ -25,14 +21,13 @@ export default function useAutoupdateCoins() {
 
     const autoUpdate = () => {
         if (isEventPeriod() && localStorage.getItem('autoupdate') === 'true') {
-            const today = DateTime.now();
-            const lastVisit = DateTime.fromISO(localStorage.getItem('last-visited')!);
+            const today = dayjs();
+            const lastVisit = dayjs(localStorage.getItem('last-visited')!);
 
             if (!isSameDay(today, lastVisit)) {
                 console.log('hello');
-                const interval = Interval.fromDateTimes(lastVisit.plus({ day: 1 }), today);
-                const daysPassed = interval.count('day');
-                const sundays = sundaysInInterval(interval);
+                const daysPassed = dayDiff(lastVisit, today);
+                const sundays = sundaysInInterval(lastVisit, today);
 
                 store.commit(
                     setCharacterData,

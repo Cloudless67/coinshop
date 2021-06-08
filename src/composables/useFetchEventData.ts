@@ -8,7 +8,6 @@ import EventData from 'raw-loader!@/assets/EventData.csv';
 import ItemsData from 'raw-loader!@/assets/ItemsData.csv';
 import CoinsData from 'raw-loader!@/assets/CoinsData.csv';
 import dayjs from 'dayjs';
-import { startOfDay } from '@/lib/utilities';
 
 export default function useLoadEventData(eventName: Ref<string>) {
     const parseCSV = (csv: string) =>
@@ -55,8 +54,8 @@ export default function useLoadEventData(eventName: Ref<string>) {
         const [startDate, endDate] = dateTimes.split(',');
         eventName.value = name;
         store.commit(setEventPeriod, {
-            eventStart: startOfDay(dayjs(startDate)),
-            eventEnd: startOfDay(dayjs(endDate)),
+            eventStart: dayjs(startDate).startOf('date'),
+            eventEnd: dayjs(endDate).startOf('date'),
         });
     }
 }
