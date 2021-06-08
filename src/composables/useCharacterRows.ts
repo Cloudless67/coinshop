@@ -3,13 +3,20 @@ import { useStore } from 'vuex';
 import { key } from '@/store';
 import Item from '@/lib/Item';
 import calculateCoinsToCollect from '@/lib/coinsToCollect';
+import dayjs from 'dayjs';
 
 export default function useCharacterRows() {
     const store = useStore(key);
 
     const rows = computed(() => {
         return store.state.characterData.table.map((row, i) => {
-            const maxToCollect = calculateCoinsToCollect(store.state, i === 0);
+            const maxToCollect = calculateCoinsToCollect(
+                dayjs(),
+                store.state.eventStart,
+                store.state.eventEnd,
+                store.state.coinBonus,
+                i === 0,
+            );
             return {
                 nickname: row[0] as string,
                 currentCoins: row[1] as number,

@@ -1,7 +1,7 @@
 import Coin from '@/lib/Coin';
 import Item from '@/lib/Item';
 import calculateCoinsToCollect from '@/lib/coinsToCollect';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { State } from 'vue';
 import * as mutations from './mutationTypes';
 
@@ -61,7 +61,17 @@ export default {
     },
 
     [mutations.addCharacterRow](state: State, row: number) {
-        state.characterData.addRow(row, ['', 0, calculateCoinsToCollect(state, row === 0)]);
+        state.characterData.addRow(row, [
+            '',
+            0,
+            calculateCoinsToCollect(
+                dayjs(),
+                state.eventStart,
+                state.eventEnd,
+                state.coinBonus,
+                row === 0,
+            ),
+        ]);
     },
 
     [mutations.removeCharacterRow](state: State, row: number) {
