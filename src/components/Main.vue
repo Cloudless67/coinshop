@@ -62,7 +62,7 @@ export default defineComponent({
 
         return {
             autoUpdate,
-            save: () => save(),
+            save,
             edit: ref(false),
             basicHelp,
             autoUpdateInfo,

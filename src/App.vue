@@ -15,9 +15,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount, ref } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import Main from '@/components/Main.vue';
-import useFetchEventData from '@/composables/useFetchEventData';
+import useLoadEventData from '@/composables/useLoadEventData';
 import useLocalStorage from '@/composables/useLocalStorage';
 import useAutoupdateCoins from '@/composables/useAutoupdateCoins';
 
@@ -26,22 +26,20 @@ export default defineComponent({
     components: { Main },
     setup() {
         const eventName = ref('');
-
-        onBeforeMount(useFetchEventData(eventName));
-
         const { save, load } = useLocalStorage();
-        load();
-
         const { autoUpdate } = useAutoupdateCoins();
 
-        return { eventName, autoUpdate, save };
-    },
-    watch: {
-        eventName() {
-            if (!this.eventName) return;
-            this.autoUpdate();
-            if (localStorage.getItem('autoupdate') === 'true') this.save();
-        },
+        useLoadEventData(eventName)();
+        load();
+
+        onMounted(() => {
+            if (localStorage.getItem('autoupdate') === 'true') {
+                autoUpdate();
+                save();
+            }
+        });
+
+        return { eventName };
     },
 });
 </script>
