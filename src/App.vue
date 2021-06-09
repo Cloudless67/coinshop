@@ -20,6 +20,7 @@ import Main from '@/components/Main.vue';
 import useLoadEventData from '@/composables/useLoadEventData';
 import useLocalStorage from '@/composables/useLocalStorage';
 import useAutoupdateCoins from '@/composables/useAutoupdateCoins';
+import dayjs from 'dayjs';
 
 export default defineComponent({
     name: 'App',
@@ -35,6 +36,15 @@ export default defineComponent({
         onMounted(() => {
             if (localStorage.getItem('autoupdate') === 'true') {
                 autoUpdate();
+                const tomorrow = dayjs()
+                    .add(1, 'day')
+                    .startOf('day');
+
+                setTimeout(() => {
+                    autoUpdate();
+                    save();
+                }, tomorrow.diff(dayjs()));
+
                 save();
             }
         });

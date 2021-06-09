@@ -11,6 +11,21 @@ import dayjs from 'dayjs';
 
 export default function useLocalStorage() {
     const store = useStore(key);
+    let fading: number;
+
+    function showMessage() {
+        const saved = document.getElementById('saved')!;
+        saved.style.display = 'block';
+
+        clearTimeout(fading);
+        fading = setTimeout(() => {
+            saved.classList.add('fade-out-to');
+            setTimeout(() => {
+                saved.classList.remove('fade-out-to');
+                saved.style.display = 'none';
+            }, 1000);
+        }, 500);
+    }
 
     const save = () => {
         localStorage.setItem(
@@ -24,6 +39,8 @@ export default function useLocalStorage() {
         localStorage.setItem('coin-bonus', store.state.coinBonus.toString());
         localStorage.setItem('characters', JSON.stringify(store.state.characterData.table));
         localStorage.setItem('items', JSON.stringify(store.state.itemCartData.table));
+
+        showMessage();
     };
 
     const load = () => {

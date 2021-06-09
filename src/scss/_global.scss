@@ -16,3 +16,25 @@ kbd {
     min-width: 8ch;
     width: 12ch;
 }
+
+#saved {
+    display: none;
+    position: fixed;
+    font-size: 1.3rem;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border-radius: 4px;
+    margin: 0 auto;
+    padding: 4px 8px;
+    top: 4rem;
+    left: 50%;
+    margin-left: -63px;
+}
+
+.fade-out {
+    transition: opacity 0.5s ease;
+}
+
+.fade-out-to {
+    opacity: 0;
+}
