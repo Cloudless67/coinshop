@@ -46,7 +46,6 @@ export default function useLocalStorage() {
 
     const load = () => {
         if (localStorage.getItem('event')) {
-            console.log(store.state.eventName);
             if (localStorage.getItem('event') !== store.state.eventName) {
                 localStorage.clear();
                 return;
