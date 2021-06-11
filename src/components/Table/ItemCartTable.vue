@@ -31,7 +31,7 @@
                         {{ row.item.storageUsage }}
                     </td>
                     <td class="per-character">
-                        {{ row.item.worldShare ? 'O' : 'X' }}
+                        {{ row.item.worldShare ? 'X' : 'O' }}
                     </td>
                     <td class="qty">
                         {{ displayQty(row.item) }}
