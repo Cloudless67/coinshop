@@ -2,7 +2,7 @@
     <div>
         <div class="text-center my-2">
             <h3>
-                <b>{{ eventName }} 코인샵</b>
+                <b>{{ $store.state.eventName }} 코인샵</b>
             </h3>
         </div>
         <div class="back">
@@ -26,11 +26,10 @@ export default defineComponent({
     name: 'App',
     components: { Main },
     setup() {
-        const eventName = ref('');
         const { save, load } = useLocalStorage();
         const { autoUpdate } = useAutoupdateCoins();
 
-        useLoadEventData(eventName)();
+        useLoadEventData()();
         load();
 
         onMounted(() => {
@@ -48,8 +47,6 @@ export default defineComponent({
                 save();
             }
         });
-
-        return { eventName };
     },
 });
 </script>

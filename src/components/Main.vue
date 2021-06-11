@@ -13,6 +13,7 @@
             저장
         </div>
         <Info :info="basicHelp" />
+        !!선데이 2배를 가정한 수치입니다!!
     </div>
     <div class="row my-2">
         <div class="col-xxl-4 overflow-auto" style="margin-top: 28px">

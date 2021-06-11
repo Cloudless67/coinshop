@@ -6,6 +6,10 @@ import { State } from 'vue';
 import * as mutations from './mutationTypes';
 
 export default {
+    [mutations.setEventName](state: State, name: string) {
+        state.eventName = name;
+    },
+
     [mutations.setEventPeriod](
         state: State,
         { eventStart, eventEnd }: { eventStart: Dayjs; eventEnd: Dayjs },

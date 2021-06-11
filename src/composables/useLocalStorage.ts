@@ -28,6 +28,7 @@ export default function useLocalStorage() {
     }
 
     const save = () => {
+        localStorage.setItem('event', store.state.eventName);
         localStorage.setItem(
             'last-visited',
             dayjs()
@@ -44,6 +45,13 @@ export default function useLocalStorage() {
     };
 
     const load = () => {
+        if (localStorage.getItem('event')) {
+            console.log(store.state.eventName);
+            if (localStorage.getItem('event') !== store.state.eventName) {
+                localStorage.clear();
+                return;
+            }
+        }
         if (localStorage.getItem('punchking'))
             store.commit(updatePunchKingScore, Number(localStorage.getItem('punchking')));
         if (localStorage.getItem('neocore'))

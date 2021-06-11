@@ -34,13 +34,13 @@
                         {{ row.item.worldShare ? 'O' : 'X' }}
                     </td>
                     <td class="qty">
-                        {{ row.item.qty >= 0 ? row.item.qty : '\u221e' }}
+                        {{ displayQty(row.item) }}
                     </td>
                     <td class="character">
                         <Autocomplete
                             v-if="showCharacterInput(row.item)"
                             :value="row.character"
-                            :itemsList="$store.state.characterData.columns[0]"
+                            :itemsList="$store.state.characterData.columns[0].map(x => [x])"
                             :disabled="row.bought"
                             :width="'100%'"
                             @update="updateCharacter(i, $event)"
@@ -76,7 +76,7 @@
                         style="cursor: pointer;"
                         @click="addRow(rows.length - 1, -1)"
                     >
-                        <span class="w-100">추가</span>
+                        <span class="w-100 btn btn-sm btn-outline-dark">추가</span>
                     </td>
                 </tr>
             </tbody>
@@ -153,6 +153,9 @@ export default defineComponent({
             value = Math.min(this.itemsLeft(this.rows[row].item, row), value);
             this.$store.commit(updateBuyingQty, { row, value });
             this.$forceUpdate();
+        },
+        displayQty(item: Item) {
+            return item.qtyDesc ? item.qtyDesc : item.qty >= 0 ? item.qty : '\u221e';
         },
         itemsLeft(item: Item, exclusiveRow: number) {
             if (item.qty < 0) return Infinity;

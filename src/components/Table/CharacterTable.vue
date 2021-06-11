@@ -38,12 +38,12 @@
             </tr>
             <tr v-show="edit">
                 <td
-                    colspan="4"
+                    colspan="5"
                     class="text-center"
                     style="cursor: pointer;"
                     @click="addRow(rows.length - 1, -1)"
                 >
-                    <span class="w-100">추가</span>
+                    <span class="w-100 btn btn-sm btn-outline-dark">추가</span>
                 </td>
             </tr>
         </tbody>

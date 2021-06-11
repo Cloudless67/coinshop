@@ -41,7 +41,7 @@ export default defineComponent({
             required: true,
         },
         itemsList: {
-            type: Array as PropType<string[]>,
+            type: Array as PropType<string[][]>,
             required: true,
         },
         disabled: { type: Boolean, default: false },
@@ -56,8 +56,15 @@ export default defineComponent({
         const list = ref<HTMLElement>();
 
         const candidates = computed(() => {
-            if (down.value) return itemsList.value.filter(x => x.includes(value.value));
-            else return itemsList.value.filter(x => x.includes(value.value)).reverse();
+            if (down.value)
+                return itemsList.value
+                    .filter(x => x[0].includes(value.value) || x[1].includes(value.value))
+                    .map(elem => elem[0]);
+            else
+                return itemsList.value
+                    .filter(x => x[0].includes(value.value) || x[1].includes(value.value))
+                    .reverse()
+                    .map(elem => elem[0]);
         });
 
         watch(active, async cur => {

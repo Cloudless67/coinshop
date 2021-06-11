@@ -11,21 +11,21 @@
                     {{ $store.state.eventEnd.format('YYYY년 MM월 DD일') }}
                 </td>
             </tr>
-            <tr>
+            <!-- <tr>
                 <td>{{ $store.state.punchKingName }}</td>
                 <td class="coins">
                     <NumberInput v-model="punchKingScore" :min="0" :max="1500" />
                 </td>
                 <td>총 {{ commaSeperatedNumber($store.state.punchKingScore * 8) }}점</td>
-            </tr>
+            </tr> -->
             <tr>
                 <td>{{ $store.state.neoCoreName }}</td>
                 <td class="coins">
                     <NumberInput v-model="neoCoreQty" :min="0" :max="400" />
                 </td>
-                <td>총 {{ commaSeperatedNumber($store.state.neoCoreQty * 7) }}개</td>
+                <td>총 {{ commaSeperatedNumber($store.state.neoCoreQty * 12) }}개</td>
             </tr>
-            <tr>
+            <!-- <tr>
                 <td>{{ $store.state.coinBonusName }}</td>
                 <td colspan="2">
                     <span class="me-2">하루</span>
@@ -34,7 +34,7 @@
                     </div>
                     <span>개</span>
                 </td>
-            </tr>
+            </tr> -->
         </tbody>
     </table>
 </template>

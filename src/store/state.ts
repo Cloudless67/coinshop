@@ -9,7 +9,7 @@ export default {
     eventEnd: dayjs(),
     coins: [] as Coin[],
     punchKingName: '펀치킹',
-    neoCoreName: '위시 코인',
+    neoCoreName: '검은콩',
     coinBonusName: '유니온 가드닝',
 
     itemsList: [] as Item[],

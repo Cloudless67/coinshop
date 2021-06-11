@@ -2,7 +2,7 @@ import { State } from 'vue';
 
 export default {
     itemsNameList(state: State) {
-        return state.itemsList.map(item => item.name);
+        return state.itemsList.map(item => [item.name, item.alias]);
     },
 
     getItemByName(state: State) {

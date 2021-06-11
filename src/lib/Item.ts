@@ -6,6 +6,7 @@ export default class Item {
     qtyDesc: string;
     worldShare: boolean;
     storageUsage: string;
+    alias: string;
 
     constructor(
         name: string,
@@ -15,6 +16,7 @@ export default class Item {
         worldShare: boolean,
         storageUsage: string,
         qtyDesc = '',
+        alias = '',
     ) {
         this.name = name;
         this.coin = coin;
@@ -23,6 +25,7 @@ export default class Item {
         this.qtyDesc = qtyDesc;
         this.worldShare = worldShare;
         this.storageUsage = storageUsage;
+        this.alias = alias;
     }
 
     public static createEmptyItem(name?: string) {
