@@ -58,11 +58,11 @@ export default defineComponent({
         const candidates = computed(() => {
             if (down.value)
                 return itemsList.value
-                    .filter(x => x[0].includes(value.value) || x[1].includes(value.value))
+                    .filter(x => x.some(y => y.includes(value.value)))
                     .map(elem => elem[0]);
             else
                 return itemsList.value
-                    .filter(x => x[0].includes(value.value) || x[1].includes(value.value))
+                    .filter(x => x.some(y => y.includes(value.value)))
                     .reverse()
                     .map(elem => elem[0]);
         });
@@ -72,7 +72,6 @@ export default defineComponent({
             await nextTick();
             const td = list.value!.closest('td')!;
             const wrapper = td.closest('section')!;
-
             down.value = showDirection(td, list.value!.closest('table')!, wrapper) === 'down';
             if (down.value) {
                 setPositionBelow(list.value!, td);
