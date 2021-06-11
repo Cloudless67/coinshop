@@ -23,7 +23,7 @@
                 <td class="coins">
                     <NumberInput v-model="neoCoreQty" :min="0" :max="400" />
                 </td>
-                <td>총 {{ commaSeperatedNumber($store.state.neoCoreQty * 12) }}개</td>
+                <td>총 {{ commaSeperatedNumber($store.state.neoCoreQty * 11) }}개</td>
             </tr>
             <tr>
                 <td>월간 미션 보상</td>
