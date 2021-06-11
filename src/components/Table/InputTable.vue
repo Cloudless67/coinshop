@@ -25,16 +25,12 @@
                 </td>
                 <td>총 {{ commaSeperatedNumber($store.state.neoCoreQty * 12) }}개</td>
             </tr>
-            <!-- <tr>
-                <td>{{ $store.state.coinBonusName }}</td>
+            <tr>
+                <td>월간 미션 보상</td>
                 <td colspan="2">
-                    <span class="me-2">하루</span>
-                    <div class="d-inline-block w-25">
-                        <NumberInput v-model="coinBonus" :min="0" :max="400" />
-                    </div>
-                    <span>개</span>
+                    4주마다 +3500개
                 </td>
-            </tr> -->
+            </tr>
         </tbody>
     </table>
 </template>

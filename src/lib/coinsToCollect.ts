@@ -11,6 +11,6 @@ export default function calculateCoinsToCollect(
     const daysLeft = Math.min(dayDiff(today, eventEnd) - 1, dayDiff(eventStart, eventEnd));
     const sundays = Math.floor((daysLeft + 3) / 7);
     const base = daysLeft * 300 + sundays * 300;
-    if (isMainCharacter) return base + coinBonus * daysLeft;
+    if (isMainCharacter) return base + 3500 * 3;
     else return base;
 }
