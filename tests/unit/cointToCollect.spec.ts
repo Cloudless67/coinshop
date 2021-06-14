@@ -4,9 +4,9 @@ import dayjs, { Dayjs } from 'dayjs';
 describe('Coins To Collect from today', () => {
     const start = dayjs('2021-04-22');
     const end = dayjs('2021-06-16');
-    const bonus = 100;
+    const bonus = [3000, 0, 0];
 
-    const calculate = (today: Dayjs, bonus: number, isMainChar: boolean) =>
+    const calculate = (today: Dayjs, bonus: number[], isMainChar: boolean) =>
         calculateCoinsToCollect(today, start, end, bonus, isMainChar);
 
     test('should collect 300 coins per day', () => {

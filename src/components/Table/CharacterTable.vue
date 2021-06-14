@@ -95,7 +95,8 @@ export default defineComponent({
             tbody,
             addRow: (row: number, col = 0) => addRow(addCharacterRow, row, col),
             removeRow: (row: number) => removeRow(removeCharacterRow, row, 0),
-            surplus: (rowData: RowData) => rowData.currentCoins + rowData.toCollect - rowData.toUse,
+            surplus: (rowData: RowData) =>
+                Number(rowData.currentCoins) + Number(rowData.toCollect) - Number(rowData.toUse),
             commaSeperatedNumber,
 
             updateNickname: (row: number, value: string) =>

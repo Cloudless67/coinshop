@@ -37,7 +37,7 @@ export default function useLocalStorage() {
         );
         localStorage.setItem('punchking', store.state.punchKingScore.toString());
         localStorage.setItem('neocore', store.state.neoCoreQty.toString());
-        localStorage.setItem('coin-bonus', store.state.coinBonus.toString());
+        localStorage.setItem('coin-bonus', JSON.stringify(store.state.coinBonus));
         localStorage.setItem('characters', JSON.stringify(store.state.characterData.table));
         localStorage.setItem('items', JSON.stringify(store.state.itemCartData.table));
 
@@ -56,7 +56,9 @@ export default function useLocalStorage() {
         if (localStorage.getItem('neocore'))
             store.commit(updateNeoCoreGain, Number(localStorage.getItem('neocore')));
         if (localStorage.getItem('coin-bonus'))
-            store.commit(updateCoinBonus, Number(localStorage.getItem('coin-bonus')));
+            (JSON.parse(localStorage.getItem('coin-bonus')!) as number[]).forEach((value, index) =>
+                store.commit(updateCoinBonus, { index, value }),
+            );
         if (localStorage.getItem('characters'))
             store.commit(setCharacterData, JSON.parse(localStorage.getItem('characters')!));
         if (localStorage.getItem('items'))

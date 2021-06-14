@@ -28,7 +28,28 @@
             <tr>
                 <td>월간 미션 보상</td>
                 <td colspan="2">
-                    4주마다 +3500개
+                    4주마다 최대 +3500개
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <div class="row">
+                        <div v-for="i in 3" :key="i" class="col">
+                            <label class="d-inline-block" :for="`coin-bonus-${i}`"
+                                >{{ i }} 차</label
+                            >
+                            <div class="d-inline-block w-75 ps-2">
+                                <NumberInput
+                                    :id="`coin-bonus-${i}`"
+                                    :modelValue="$store.state.coinBonus[i - 1]"
+                                    @update:modelValue="setCoinBonus(i - 1, $event)"
+                                    :min="0"
+                                    :max="3500"
+                                    :disabled="month < i"
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -38,14 +59,29 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import NumberInput from '@/components/NumberInput.vue';
-import { updateNeoCoreGain, updatePunchKingScore, updateCoinBonus } from '@/store/mutationTypes';
+import {
+    updateNeoCoreGain,
+    updatePunchKingScore,
+    updateCoinBonus,
+    updateCharacterCurrentCoins,
+    setCharacterData,
+} from '@/store/mutationTypes';
 import useUtilities from '@/composables/useUtilities';
+import month from '@/lib/month';
+import useTableController from '@/composables/useTableController';
 
 export default defineComponent({
     name: 'Input Table',
     components: { NumberInput },
     setup() {
-        return useUtilities();
+        const { commaSeperatedNumber } = useUtilities();
+        const { updateCellValue } = useTableController();
+
+        return {
+            commaSeperatedNumber,
+            updateMainCharacterCoin: (value: string) =>
+                updateCellValue(updateCharacterCurrentCoins, 0, value),
+        };
     },
     computed: {
         punchKingScore: {
@@ -64,13 +100,15 @@ export default defineComponent({
                 this.$store.commit(updateNeoCoreGain, value);
             },
         },
-        coinBonus: {
-            get() {
-                return this.$store.state.coinBonus;
-            },
-            set(value: number) {
-                this.$store.commit(updateCoinBonus, value);
-            },
+        month,
+    },
+    methods: {
+        setCoinBonus(index: number, value: number) {
+            const delta = value - this.$store.state.coinBonus[index];
+            this.$store.commit(updateCoinBonus, { index, value });
+            this.updateMainCharacterCoin(
+                (Number(this.$store.state.characterData.table[0][1]) + delta).toString(),
+            );
         },
     },
 });

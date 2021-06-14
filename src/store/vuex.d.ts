@@ -19,7 +19,7 @@ declare module '@vue/runtime-core' {
 
         punchKingScore: number;
         neoCoreQty: number;
-        coinBonus: number;
+        coinBonus: number[];
 
         autoUpdateCoins: boolean;
 

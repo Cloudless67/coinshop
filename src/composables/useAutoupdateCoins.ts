@@ -13,7 +13,7 @@ export default function useAutoupdateCoins() {
     const isSameDay = (day1: Dayjs, day2: Dayjs) => day1.diff(day2) === 0;
 
     const coinsCollectedFor = (days: number, sundays: number, isMainCharacter: boolean) => {
-        if (isMainCharacter) return (days + sundays) * (300 + state.coinBonus);
+        if (isMainCharacter) return days + sundays;
         else return (days + sundays) * 300;
     };
 

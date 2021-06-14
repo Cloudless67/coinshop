@@ -34,8 +34,8 @@ export default {
         state.neoCoreQty = value;
     },
 
-    [mutations.updateCoinBonus](state: State, value: number) {
-        state.coinBonus = value;
+    [mutations.updateCoinBonus](state: State, { index, value }: { index: number; value: number }) {
+        state.coinBonus[index] = value;
     },
 
     [mutations.setCharacterData](state: State, table: (string | number)[][]) {

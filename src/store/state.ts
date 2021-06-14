@@ -16,7 +16,7 @@ export default {
 
     punchKingScore: 1500,
     neoCoreQty: 400,
-    coinBonus: 0,
+    coinBonus: [0, 0, 0],
 
     autoUpdateCoins: true,
     characterData: new Table([
