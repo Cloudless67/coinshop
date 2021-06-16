@@ -12,7 +12,7 @@ export default function calculateCoinsToCollect(
     const daysLeft = Math.min(dayDiff(today, eventEnd) - 1, dayDiff(eventStart, eventEnd));
     const sundays = Math.floor((daysLeft + 3) / 7);
     const base = daysLeft * 300 + sundays * 300;
-    const curMonth = month();
+    const curMonth = month(today);
 
     if (isMainCharacter) {
         let bonus = (3 - curMonth) * 3500;

@@ -3,22 +3,23 @@ import { useStore } from 'vuex';
 import { key } from '@/store';
 import Item from '@/lib/Item';
 import calculateCoinsToCollect from '@/lib/coinsToCollect';
-import dayjs from 'dayjs';
+import { updateCharacterCoinsToCollect } from '@/store/mutationTypes';
 
 export default function useCharacterRows() {
     const store = useStore(key);
+    const state = store.state;
 
     const calculateCoins = (isMainCharacter: boolean) =>
         calculateCoinsToCollect(
-            dayjs(),
-            store.state.eventStart,
-            store.state.eventEnd,
-            store.state.coinBonus,
+            state.today,
+            state.eventStart,
+            state.eventEnd,
+            state.coinBonus,
             isMainCharacter,
         );
 
     const rows = computed(() => {
-        return store.state.characterData.table.map((row, i) => {
+        return state.characterData.table.map((row, i) => {
             const maxToCollect = calculateCoins(i === 0);
             return {
                 nickname: row[0] as string,
@@ -30,7 +31,7 @@ export default function useCharacterRows() {
     });
 
     function calculateCoinsToUse(row: (string | number)[]) {
-        return store.state.itemCartData.table
+        return state.itemCartData.table
             .filter(cartRow => cartRow[1] === row[0] && !cartRow[3])
             .map(cartRow => {
                 const item: Item = store.getters.getItemByName(cartRow[0]);

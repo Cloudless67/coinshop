@@ -64,7 +64,7 @@ import {
     updatePunchKingScore,
     updateCoinBonus,
     updateCharacterCurrentCoins,
-    setCharacterData,
+    updateCharacterCoinsToCollect,
 } from '@/store/mutationTypes';
 import useUtilities from '@/composables/useUtilities';
 import month from '@/lib/month';
@@ -81,6 +81,8 @@ export default defineComponent({
             commaSeperatedNumber,
             updateMainCharacterCoin: (value: string) =>
                 updateCellValue(updateCharacterCurrentCoins, 0, value),
+            updateMainCoinsToCollect: (value: string) =>
+                updateCellValue(updateCharacterCoinsToCollect, 0, value),
         };
     },
     computed: {
@@ -100,7 +102,9 @@ export default defineComponent({
                 this.$store.commit(updateNeoCoreGain, value);
             },
         },
-        month,
+        month() {
+            return month(this.$store.state.today);
+        },
     },
     methods: {
         setCoinBonus(index: number, value: number) {

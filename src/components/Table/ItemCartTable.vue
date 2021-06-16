@@ -184,7 +184,7 @@ export default defineComponent({
                 this.$store.commit(updateCharacterCurrentCoins, {
                     row: characterRow,
                     value:
-                        (this.$store.state.characterData.table[characterRow][1] as number) +
+                        Number(this.$store.state.characterData.table[characterRow][1]) +
                         this.rows[row].sum * (buy ? -1 : 1),
                 });
             }

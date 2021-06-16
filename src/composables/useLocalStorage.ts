@@ -55,10 +55,18 @@ export default function useLocalStorage() {
             store.commit(updatePunchKingScore, Number(localStorage.getItem('punchking')));
         if (localStorage.getItem('neocore'))
             store.commit(updateNeoCoreGain, Number(localStorage.getItem('neocore')));
-        if (localStorage.getItem('coin-bonus'))
-            (JSON.parse(localStorage.getItem('coin-bonus')!) as number[]).forEach((value, index) =>
-                store.commit(updateCoinBonus, { index, value }),
-            );
+        if (localStorage.getItem('coin-bonus')) {
+            const coinBonus: number | number[] = JSON.parse(localStorage.getItem('coin-bonus')!);
+            if (typeof coinBonus === 'number') {
+                [0, 0, 0].forEach((value, index) =>
+                    store.commit(updateCoinBonus, { index, value }),
+                );
+            } else {
+                coinBonus.forEach((value, index) =>
+                    store.commit(updateCoinBonus, { index, value }),
+                );
+            }
+        }
         if (localStorage.getItem('characters'))
             store.commit(setCharacterData, JSON.parse(localStorage.getItem('characters')!));
         if (localStorage.getItem('items'))

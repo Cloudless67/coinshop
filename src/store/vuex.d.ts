@@ -10,6 +10,7 @@ declare module '@vue/runtime-core' {
         eventName: string;
         eventStart: Dayjs;
         eventEnd: Dayjs;
+        today: Dayjs;
         coins: Coin[];
         punchKingName: string;
         neoCoreName: string;

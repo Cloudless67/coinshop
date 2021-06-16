@@ -36,10 +36,11 @@ export default defineComponent({
             if (localStorage.getItem('autoupdate') === 'true') {
                 autoUpdate();
                 const tomorrow = dayjs()
-                    .add(1, 'day')
-                    .startOf('day');
+                    .startOf('date')
+                    .add(1, 'day');
 
                 setTimeout(() => {
+                    console.log('day changed!');
                     autoUpdate();
                     save();
                 }, tomorrow.diff(dayjs()));

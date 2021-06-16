@@ -53,14 +53,14 @@ export default {
         state: State,
         { row, value }: { row: number; value: number },
     ) {
-        state.characterData.table[row][1] = value;
+        state.characterData.table[row][1] = Number(value);
     },
 
     [mutations.updateCharacterCoinsToCollect](
         state: State,
         { row, value }: { row: number; value: number },
     ) {
-        state.characterData.table[row][2] = value;
+        state.characterData.table[row][2] = Number(value);
         state.characterData.table[row][3] = 'true';
     },
 
@@ -69,7 +69,7 @@ export default {
             '',
             0,
             calculateCoinsToCollect(
-                dayjs(),
+                state.today,
                 state.eventStart,
                 state.eventEnd,
                 state.coinBonus,
