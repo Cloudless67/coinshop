@@ -10,7 +10,6 @@
                 <Main />
             </div>
         </div>
-        <div class="d-xxl-none front"></div>
     </div>
 </template>
 
@@ -71,14 +70,5 @@ body {
     margin-top: 2rem;
     margin-bottom: 2rem;
     box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.3);
-}
-
-.front {
-    position: absolute;
-    background-image: url('assets/front.webp');
-    width: 100%;
-    height: 50vh;
-    bottom: 0;
-    z-index: -10;
 }
 </style>
