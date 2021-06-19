@@ -13,7 +13,6 @@
             저장
         </div>
         <Info :info="basicHelp" />
-        !!선데이 2배를 가정한 수치입니다!!
     </div>
     <div class="row my-2">
         <div class="col-xxl-4 overflow-auto" style="margin-top: 28px">
@@ -43,13 +42,14 @@ import { computed, defineComponent, ref } from 'vue';
 import InputTable from './Table/InputTable.vue';
 import CharacterTable from './Table/CharacterTable.vue';
 import ItemCartTable from './Table/ItemCartTable.vue';
+import FlipCard from './FlipCard.vue';
 import Info from './Info.vue';
 import useLocalStorage from '@/composables/useLocalStorage';
 import { basicHelp, autoUpdateInfo } from '@/constants';
 
 export default defineComponent({
     name: 'Main',
-    components: { InputTable, CharacterTable, ItemCartTable, Info },
+    components: { InputTable, CharacterTable, ItemCartTable, Info, FlipCard },
     setup() {
         const { save } = useLocalStorage();
 
