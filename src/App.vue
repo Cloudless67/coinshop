@@ -56,6 +56,7 @@ export default defineComponent({
 body {
     position: relative;
     width: 100%;
+    height: 100%;
     background-image: url('assets/back.webp');
     display: flex;
     flex-direction: column;

@@ -1,5 +1,5 @@
 <template>
-    <div class="flip-card" :class="{ flipped }">
+    <div class="flip-card" :class="{ flipped }" style="height: 1.5rem;">
         <div class="flip-card-front">
             <slot name="front"></slot>
         </div>
@@ -26,7 +26,7 @@ export default defineComponent({
 .flip-card {
     position: relative;
     transform-style: preserve-3d;
-    transition: all 0.3s ease;
+    transition: all 0.5s ease;
 }
 
 .flip-card.flipped {

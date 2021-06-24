@@ -23,6 +23,9 @@ input {
     border-radius: 4px;
 }
 
+$primary: rgb(34, 187, 187);
+$success: rgb(170, 221, 51);
+
 @import '../../node_modules/bootstrap/scss/functions';
 @import '../../node_modules/bootstrap/scss/variables';
 @import '../../node_modules/bootstrap/scss/mixins';

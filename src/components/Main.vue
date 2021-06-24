@@ -12,6 +12,9 @@
         <div class="btn btn-sm btn-outline-dark ms-2" @click="save">
             저장
         </div>
+        <div class="btn btn-sm btn-outline-dark ms-2" @click="showDailyMission = true">
+            일일 미션
+        </div>
         <Info :info="basicHelp" />
     </div>
     <div class="row my-2">
@@ -34,6 +37,7 @@
         <div class="col-xxl-8">
             <ItemCartTable :edit="edit" />
         </div>
+        <DailyMissions :show="showDailyMission" @close="showDailyMission = false" />
     </div>
 </template>
 
@@ -42,14 +46,14 @@ import { computed, defineComponent, ref } from 'vue';
 import InputTable from './Table/InputTable.vue';
 import CharacterTable from './Table/CharacterTable.vue';
 import ItemCartTable from './Table/ItemCartTable.vue';
-import FlipCard from './FlipCard.vue';
 import Info from './Info.vue';
+import DailyMissions from './DailyMissions.vue';
 import useLocalStorage from '@/composables/useLocalStorage';
 import { basicHelp, autoUpdateInfo } from '@/constants';
 
 export default defineComponent({
     name: 'Main',
-    components: { InputTable, CharacterTable, ItemCartTable, Info, FlipCard },
+    components: { InputTable, CharacterTable, ItemCartTable, Info, DailyMissions },
     setup() {
         const { save } = useLocalStorage();
 
@@ -67,6 +71,7 @@ export default defineComponent({
             edit: ref(false),
             basicHelp,
             autoUpdateInfo,
+            showDailyMission: ref(false),
         };
     },
 });
